@@ -711,7 +711,18 @@
 <button id="videoExportCancel" type="button">Cancel Export</button>
 </div>
 </div>
-</section></main><script src="assets/js/app.js" type="module"></script>
+</section></main><script>
+// ES modules cannot be loaded from file:// (browsers block external module
+// scripts from disk). The single-file build ran its module inline, which is
+// why double-clicking used to work. Serve this folder over HTTP instead.
+if (location.protocol === "file:") {
+  var statusEl = document.getElementById("status");
+  if (statusEl) {
+    statusEl.textContent =
+      "This modular build cannot run from file:// — open a terminal in this folder, run \"python -m http.server 8000\", then open http://localhost:8000";
+  }
+}
+</script><script src="assets/js/app.js" type="module"></script>
 </body>
 </html>
 

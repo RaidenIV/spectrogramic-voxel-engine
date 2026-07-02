@@ -924,9 +924,6 @@ export function updateMatrices() {
 
   const frequencyMode =
     state.analysisMode === "frequency";
-  const showBlankBlocks =
-    runtime.historyCount === 0 &&
-    (!runtime.decodedAudioBuffer || runtime.forceBlankHistoryGrid);
 
   for (let age = 0; age < state.historyRows; age++) {
     const upperMesh = runtime.upperRowMeshes[age];
@@ -940,13 +937,7 @@ export function updateMatrices() {
     updateRowVerticalColors(age, fade);
 
     for (let sampleIndex = 0; sampleIndex < state.count; sampleIndex++) {
-      if (age >= runtime.historyCount && !showBlankBlocks) {
-        setHiddenInstance(upperMesh, sampleIndex, z);
-        setHiddenInstance(undersideMesh, sampleIndex, z);
-        continue;
-      }
-
-      const sample = showBlankBlocks
+      const sample = age >= runtime.historyCount
         ? 0
         : getHistoryValue(age, sampleIndex);
       const magnitude = Math.abs(sample);

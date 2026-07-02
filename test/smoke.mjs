@@ -178,6 +178,36 @@ check('uncaught errors surface in status bar',
     !fileButton?.classList.contains('is-loading'));
 }
 
+// Cascade rows must populate the existing blank grid in place. Unfilled rows
+// remain visible as zero-amplitude placeholders instead of being hidden and
+// recreated as history grows.
+{
+  const { commitSampledRow } = await import(new URL('assets/js/analysis.js', ROOT));
+  const { clearHistory, updateMatrices } = await import(new URL('assets/js/renderer.js', ROOT));
+  const { runtime, state } = await import(new URL('assets/js/core.js', ROOT));
+
+  clearHistory(true);
+  const placeholderMesh = runtime.upperRowMeshes[1];
+  commitSampledRow(new Float32Array(state.count).fill(0.5));
+  updateMatrices();
+
+  const placeholderMatrix = new Float32Array(16);
+  placeholderMesh.getMatrixAt(0, {
+    elements: placeholderMatrix,
+    fromArray(array, offset = 0) {
+      placeholderMatrix.set(array.subarray(offset, offset + 16));
+      return this;
+    }
+  });
+
+  check('cascade reuses the existing blank row meshes',
+    runtime.upperRowMeshes[1] === placeholderMesh);
+  check('unfilled cascade rows remain visible as blank placeholders',
+    Math.abs(placeholderMatrix[0]) > 0.001 &&
+    Math.abs(placeholderMatrix[5]) > 0.001 &&
+    Math.abs(placeholderMatrix[10]) > 0.001);
+}
+
 // Sidebar logo (SIDEBAR.md section 14): bottom-anchored flex footer, single
 // canonical CSS rule, stable scrollbar gutter, correct SVG attribute casing.
 {

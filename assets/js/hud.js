@@ -18,8 +18,15 @@ export function updateKeyboardControlText() {
   controlText.textContent = text;
   controlText.hidden = !state.keyboardControlTextVisible || text.length === 0;
   controlText.style.fontSize = `${state.keyboardControlTextFontSize}px`;
-  controlText.style.left = `${state.keyboardControlTextX}%`;
-  controlText.style.top = `${state.keyboardControlTextY}%`;
+
+  const viewportElement = document.getElementById("viewport");
+  const viewportWidth = viewportElement?.clientWidth || window.innerWidth || 0;
+  const viewportHeight = viewportElement?.clientHeight || window.innerHeight || 0;
+  const xOffset = ((state.keyboardControlTextX - 75) / 100) * viewportWidth;
+  const yOffset = ((state.keyboardControlTextY - 96) / 100) * viewportHeight;
+
+  controlText.style.left = `${xOffset}px`;
+  controlText.style.top = `${yOffset}px`;
 }
 
 export function rebuildHudCanvasTexture() {

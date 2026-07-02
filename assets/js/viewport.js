@@ -5,7 +5,7 @@ import { BASELINE_CAMERA_VERTICAL_FOV, BASELINE_VIEWPORT_ASPECT, CAMERA_PRESETS,
 import { aspectRatioInput, camera, cameraPresetInput, controls, hooks, orientationInput, renderer, runtime, state, status, viewport, viewportFrame, viewportSizeInput } from "./core.js";
 import { clamp } from "./utils.js";
 import { getHistoryDepthCenter } from "./renderer.js";
-import { applyHudFormatPreset, updateViewportLogoLayout } from "./hud.js";
+import { applyHudFormatPreset, updateKeyboardControlText, updateViewportLogoLayout } from "./hud.js";
 
 export function getViewportFormatName() {
   if (state.aspectRatio === "square") {
@@ -353,11 +353,13 @@ export function toggleFullscreen() {
 
 export function resize() {
   fitViewport();
+  updateKeyboardControlText();
 }
 
 export const viewportResizeObserver = new ResizeObserver(() => {
   if (!runtime.isExportingVideo && !runtime.isExportingPng) {
     fitViewport();
+    updateKeyboardControlText();
   }
 });
 

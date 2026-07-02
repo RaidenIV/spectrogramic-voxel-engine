@@ -109,36 +109,34 @@ canvas {
   backdrop-filter: blur(8px);
 }
 
-.mouse-help {
+.control-help-row {
   right: 18px;
   bottom: 16px;
   left: 18px;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: center;
-  gap: 18px;
   color: rgba(255, 255, 255, 0.42);
   font-size: 11px;
   line-height: 1.2;
   text-align: center;
   white-space: nowrap;
-}
-
-.mouse-help span + span::before {
-  margin-right: 18px;
-  color: rgba(255, 255, 255, 0.22);
-  content: "·";
 }
 
 .keyboard-control-text {
-  left: 75%;
-  top: 96%;
-  color: rgba(255, 255, 255, 0.42);
+  position: relative;
+  color: inherit;
   font-size: 11px;
   line-height: 1.2;
   text-align: center;
   white-space: nowrap;
-  transform: translate(-50%, -50%);
+}
+
+.keyboard-control-text::before {
+  margin-right: 18px;
+  margin-left: 18px;
+  color: rgba(255, 255, 255, 0.22);
+  content: "·";
 }
 
 #viewport:focus {
@@ -903,7 +901,7 @@ input:focus-visible,
   -webkit-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23a8a8b6' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 20px center;
+  background-position: right 10px center;
   background-size: 10px 6px;
 }
 

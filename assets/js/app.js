@@ -1,11 +1,12 @@
 // app.js — generated module split of the Spectrogramic Voxel Engine (behavior unchanged)
 // Entry point: wires events and boots the app.
+import { DEFAULT_CAMERA_PRESET } from "./config.js";
 import { app, applyCameraPresetButton, aspectRatioInput, audio, audioFileInput, camera, cameraPresetInput, clearButton, controls, exportVideoButton, renderer, loopButton, orientationInput, playButton, runtime, sidebarToggle, sidebarToggleIcon, state, status, timeline, videoBitrateInput, videoExportCancel, videoFileTypeInput, videoFrameRateInput, viewport, viewportResolutionInput } from "./core.js";
 import { isFirefoxBrowser } from "./utils.js";
 import { computeOfflineSpectrum, rebuildHudFrequencySpectrogram } from "./analysis.js";
 import { clearHistory, rebuildWaveform, updateFps, updateLighting, updateMaterialProperties, updateMatrices } from "./renderer.js";
-import { applyHudFormatPreset, applyViewportColorMode, renderSceneWithHud, updateViewportLogoLayout } from "./hud.js";
-import { applyCameraPreset, fitViewport, getViewportResolutionDimensions, markCameraPresetCustom, resetCamera, resize, toggleFullscreen, updateExportFormatControls, updateRendererResolution, updateSinusoidalCamera, viewportResizeObserver } from "./viewport.js";
+import { applyHudFormatPreset, applyViewportColorMode, renderSceneWithHud, updateKeyboardControlText, updateViewportLogoLayout } from "./hud.js";
+import { applyCameraPreset, fitViewport, getViewportResolutionDimensions, markCameraPresetCustom, resetCamera, resetViewToDefaults, resize, toggleFullscreen, updateExportFormatControls, updateRendererResolution, updateSinusoidalCamera, viewportResizeObserver } from "./viewport.js";
 import { commitTimelineSeek, syncPlaybackTimeline, synchronizeCascadeToAudioTime, togglePlayback, updateOutputAudioLevel } from "./playback.js";
 import { enforceSelectedLoop, loopModalController, syncLoopButton } from "./loop.js";
 import { hideFftLoadProgress, loadAudioFile, setFftLoadProgress } from "./loader.js";
@@ -220,6 +221,19 @@ bindCheckbox("hudVisible", "hudVisible", () => {
   state.hudLayer = null;
   updateViewportLogoLayout();
 });
+
+bindCheckbox(
+  "keyboardControlTextVisible",
+  "keyboardControlTextVisible",
+  updateKeyboardControlText
+);
+
+document
+  .getElementById("keyboardControlText")
+  .addEventListener("input", (event) => {
+    state.keyboardControlText = event.target.value;
+    updateKeyboardControlText();
+  });
 
 bindCheckbox("logoVisible", "logoVisible", () => {
   updateViewportLogoLayout();
@@ -569,11 +583,9 @@ videoExportCancel.addEventListener("pointerdown", (event) => {
 });
 
 orientationInput.addEventListener("change", () => {
-  if (orientationInput.value === "square") {
-    return;
-  }
-
-  state.orientation = orientationInput.value;
+  state.orientation = orientationInput.checked
+    ? "landscape"
+    : "portrait";
   updateExportFormatControls();
   applyHudFormatPreset();
   fitViewport();
@@ -622,7 +634,7 @@ document
 
 document
   .getElementById("resetButton")
-  .addEventListener("click", resetCamera);
+  .addEventListener("click", resetViewToDefaults);
 
 viewport.addEventListener("pointerdown", (event) => {
   if (event.target.closest("button, input, select, textarea, a")) {
@@ -748,6 +760,8 @@ applyViewportColorMode(true);
 
 updateViewportLogoLayout();
 
+updateKeyboardControlText();
+
 updateMaterialControlVisibility();
 
 updateExportFormatControls();
@@ -764,7 +778,7 @@ rebuildWaveform();
 
 updateLighting();
 
-applyCameraPreset("right", false);
+applyCameraPreset(DEFAULT_CAMERA_PRESET, false);
 
 controls.autoRotate = state.autoRotate;
 

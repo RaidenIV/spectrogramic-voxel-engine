@@ -1,11 +1,11 @@
 // viewport.js — generated module split of the Spectrogramic Voxel Engine (behavior unchanged)
 // Viewport sizing, resolution presets, camera presets, fullscreen, resize.
 import * as THREE from "three";
-import { BASELINE_CAMERA_VERTICAL_FOV, BASELINE_VIEWPORT_ASPECT, CAMERA_PRESETS, PREVIEW_MAX_RENDER_SCALE, PREVIEW_MIN_RENDER_SCALE } from "./config.js";
-import { aspectRatioInput, camera, cameraPresetInput, controls, hooks, orientationInput, renderer, runtime, state, status, viewport, viewportFrame } from "./core.js";
+import { BASELINE_CAMERA_VERTICAL_FOV, BASELINE_VIEWPORT_ASPECT, CAMERA_PRESETS, DEFAULT_CAMERA_PRESET, PREVIEW_MAX_RENDER_SCALE, PREVIEW_MIN_RENDER_SCALE, defaults } from "./config.js";
+import { aspectRatioInput, camera, cameraPresetInput, controls, hooks, orientationInput, renderer, runtime, state, status, viewport, viewportFrame, viewportSizeInput } from "./core.js";
 import { clamp } from "./utils.js";
 import { getHistoryDepthCenter } from "./renderer.js";
-import { updateViewportLogoLayout } from "./hud.js";
+import { applyHudFormatPreset, updateViewportLogoLayout } from "./hud.js";
 
 export function getViewportFormatName() {
   if (state.aspectRatio === "square") {
@@ -78,39 +78,39 @@ export function getViewportResolutionDimensions() {
 
 export function updateExportFormatControls() {
   const isSquare = state.aspectRatio === "square";
-  const squareOrientationOption =
-    orientationInput.querySelector('option[value="square"]');
+  const orientationLabel = document.getElementById("orientationLabel");
   const widescreenOption =
     aspectRatioInput.querySelector('option[value="widescreen"]');
+  const isLandscape = state.orientation !== "portrait";
+  const orientationName = isLandscape ? "Landscape" : "Portrait";
 
   if (widescreenOption) {
-    widescreenOption.textContent = state.orientation === "portrait"
-      ? "Portrait — 9:16"
-      : "Landscape — 16:9";
+    widescreenOption.textContent = isLandscape
+      ? "Landscape — 16:9"
+      : "Portrait — 9:16";
   }
 
-  if (squareOrientationOption) {
-    squareOrientationOption.hidden = !isSquare;
-  }
-
-  orientationInput.value = isSquare
-    ? "square"
-    : state.orientation;
+  orientationInput.checked = isLandscape;
   orientationInput.disabled = isSquare;
+  orientationInput.setAttribute("aria-disabled", String(isSquare));
+  orientationInput.setAttribute("aria-checked", String(isLandscape));
   orientationInput.setAttribute(
-    "aria-disabled",
-    String(isSquare)
+    "aria-label",
+    isSquare ? "Square orientation" : `${orientationName} orientation`
   );
   orientationInput.title = isSquare
     ? "Square — 1:1. Orientation does not apply."
-    : state.orientation === "portrait"
-      ? "Portrait — 9:16 viewport orientation."
-      : "Landscape — 16:9 viewport orientation.";
+    : `${orientationName} viewport orientation.`;
+
+  if (orientationLabel) {
+    orientationLabel.textContent = isSquare ? "Square" : orientationName;
+  }
+
   aspectRatioInput.title = isSquare
     ? "Square — 1:1 viewport aspect ratio."
-    : state.orientation === "portrait"
-      ? "Portrait — 9:16 viewport aspect ratio."
-      : "Landscape — 16:9 viewport aspect ratio.";
+    : isLandscape
+      ? "Landscape — 16:9 viewport aspect ratio."
+      : "Portrait — 9:16 viewport aspect ratio.";
 }
 
 export function updateRendererResolution() {
@@ -185,6 +185,51 @@ export function fitViewport() {
 
   updateRendererResolution();
   updateViewportLogoLayout();
+}
+
+export function resetViewToDefaults() {
+  Object.assign(state, {
+    orientation: defaults.orientation,
+    aspectRatio: defaults.aspectRatio,
+    viewportSize: defaults.viewportSize,
+    cameraHeight: defaults.cameraHeight,
+    cameraDistance: defaults.cameraDistance,
+    cameraZoom: defaults.cameraZoom,
+    autoRotate: defaults.autoRotate,
+    autoRotateSpeed: defaults.autoRotateSpeed,
+    sinusoidalCameraActive: defaults.sinusoidalCameraActive
+  });
+
+  viewportSizeInput.value = String(state.viewportSize);
+  hooks.setOutputValue("viewportSizeValue", state.viewportSize, 0, "%");
+
+  const cameraZoomInput = document.getElementById("cameraZoom");
+  const autoRotateInput = document.getElementById("autoRotate");
+  const autoRotateSpeedInput = document.getElementById("autoRotateSpeed");
+
+  if (cameraZoomInput) cameraZoomInput.value = String(state.cameraZoom);
+  if (autoRotateInput) autoRotateInput.checked = state.autoRotate;
+  if (autoRotateSpeedInput) {
+    autoRotateSpeedInput.value = String(state.autoRotateSpeed);
+  }
+
+  hooks.setOutputValue("cameraZoomValue", state.cameraZoom, 2, "×");
+  hooks.setOutputValue(
+    "autoRotateSpeedValue",
+    state.autoRotateSpeed,
+    2,
+    "×"
+  );
+
+  cameraPresetInput.value = DEFAULT_CAMERA_PRESET;
+  controls.autoRotate = state.autoRotate;
+  controls.autoRotateSpeed = state.autoRotateSpeed;
+
+  updateExportFormatControls();
+  applyHudFormatPreset();
+  fitViewport();
+  applyCameraPreset(DEFAULT_CAMERA_PRESET, false);
+  status.textContent = "View reset to default camera and display settings.";
 }
 
 export function resetCamera() {

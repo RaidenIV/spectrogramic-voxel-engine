@@ -6,6 +6,19 @@ import { audio, camera, hooks, hudCamera, hudCanvas, hudContext, hudDrawingBuffe
 import { clamp, hexToHudRgba } from "./utils.js";
 import { getHudLevelData, getHudSpectrumData, getHudWaveformData } from "./analysis.js";
 
+
+export function updateKeyboardControlText() {
+  const controlText = document.getElementById("keyboardControlTextDisplay");
+
+  if (!controlText) {
+    return;
+  }
+
+  const text = String(state.keyboardControlText || "").trim();
+  controlText.textContent = text;
+  controlText.hidden = !state.keyboardControlTextVisible || text.length === 0;
+}
+
 export function rebuildHudCanvasTexture() {
   const previousTexture = runtime.hudTexture;
   runtime.hudTexture = new THREE.CanvasTexture(hudCanvas);

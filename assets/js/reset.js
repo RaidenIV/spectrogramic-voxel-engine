@@ -1,10 +1,10 @@
 // reset.js — generated module split of the Spectrogramic Voxel Engine (behavior unchanged)
 // Reset-to-defaults for each control section.
-import { defaults } from "./config.js";
+import { DEFAULT_CAMERA_PRESET, defaults } from "./config.js";
 import { audio, cameraPresetInput, controls, exportFileNameInput, runtime, state, status } from "./core.js";
 import { rebuildHudFrequencySpectrogram } from "./analysis.js";
 import { clearHistory, rebuildWaveform, updateLighting, updateMatrices } from "./renderer.js";
-import { applyViewportColorMode, updateViewportLogoLayout } from "./hud.js";
+import { applyViewportColorMode, updateKeyboardControlText, updateViewportLogoLayout } from "./hud.js";
 import { applyCameraPreset, fitViewport, resetCamera, updateExportFormatControls, updateRendererResolution } from "./viewport.js";
 import { updateOutputAudioLevel } from "./playback.js";
 import { syncControlsFromState, updateMaterialControlVisibility } from "./controls.js";
@@ -16,9 +16,10 @@ export const SECTION_DEFAULT_KEYS = Object.freeze({
     "attack", "release", "spatialSmoothing", "historyBlend",
     "cascadeRate"
   ],
-  Viewport: ["orientation", "aspectRatio", "viewportSize"],
-  "Viewport HUD": [
-    "hudVisible", "logoVisible", "logoX", "logoY", "logoSize",
+  DISPLAY: ["orientation", "aspectRatio", "viewportSize"],
+  HUD: [
+    "hudVisible", "keyboardControlTextVisible", "keyboardControlText",
+    "logoVisible", "logoX", "logoY", "logoSize",
     "frequencyGraphPlacement", "waveformGraphPlacement",
     "levelsGraphPlacement", "graphWidth", "graphHeight",
     "metadataX", "metadataY", "guiTextSize"
@@ -53,7 +54,7 @@ export const SECTION_DEFAULT_KEYS = Object.freeze({
     "viewportResolution", "videoFileType", "videoFrameRate",
     "videoBitrate"
   ],
-  "Presets & Utilities": []
+  PRESETS: []
 });
 
 export function restoreDefaultKeys(keys) {
@@ -85,13 +86,14 @@ export function resetSectionSettings(sectionName) {
         if (error?.name !== "AbortError") console.error(error);
       });
     }
-  } else if (sectionName === "Viewport") {
+  } else if (sectionName === "DISPLAY") {
     updateExportFormatControls();
     fitViewport();
-  } else if (sectionName === "Viewport HUD") {
+  } else if (sectionName === "HUD") {
     state.hudLayer = null;
     state.hudSpectrumSmoothed = null;
     updateViewportLogoLayout();
+    updateKeyboardControlText();
   } else if (sectionName === "Waveform Geometry") {
     state.hudLayer = null;
     rebuildWaveform();
@@ -116,15 +118,15 @@ export function resetSectionSettings(sectionName) {
     if (performancePreset) performancePreset.value = "medium";
     updateRendererResolution();
   } else if (sectionName === "Camera") {
-    cameraPresetInput.value = "right";
-    applyCameraPreset("right", false);
+    cameraPresetInput.value = DEFAULT_CAMERA_PRESET;
+    applyCameraPreset(DEFAULT_CAMERA_PRESET, false);
     controls.autoRotate = state.autoRotate;
     controls.autoRotateSpeed = state.autoRotateSpeed;
   } else if (sectionName === "Export") {
     exportFileNameInput.value = "";
     updateExportFormatControls();
     updateVideoExportFormatUi(false);
-  } else if (sectionName === "Presets & Utilities") {
+  } else if (sectionName === "PRESETS") {
     document.getElementById("presetName").value = "";
     document.getElementById("savedPresets").value = "";
   }

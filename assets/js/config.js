@@ -74,6 +74,8 @@ export const defaults = {
   metadataY: 2.5,
   guiTextSize: 0.75,
   hudVisible: true,
+  keyboardControlTextVisible: true,
+  keyboardControlText: "Spacebar: play/pause",
   logoVisible: true,
   logoX: 50,
   logoY: 5,
@@ -107,6 +109,8 @@ export const ALLOWED_COLORMAPS = new Set([
 export const DARK_VIEWPORT_BACKGROUND = "#000000";
 
 export const LIGHT_VIEWPORT_BACKGROUND = "#ffffff";
+
+export const DEFAULT_CAMERA_PRESET = "right";
 
 export const DARK_MODE_HUD_COLOR = "#ffffff";
 

@@ -5,7 +5,7 @@ import { audio, controls, hooks, runtime, state, status } from "./core.js";
 import { clamp } from "./utils.js";
 import { rebuildHudFrequencySpectrogram } from "./analysis.js";
 import { rebuildWaveform, updateLighting } from "./renderer.js";
-import { applyViewportColorMode, updateViewportLogoLayout } from "./hud.js";
+import { applyViewportColorMode, updateKeyboardControlText, updateViewportLogoLayout } from "./hud.js";
 import { fitViewport, resetCamera, updateExportFormatControls, updateRendererResolution } from "./viewport.js";
 import { updateOutputAudioLevel } from "./playback.js";
 
@@ -18,7 +18,7 @@ export function updateMaterialControlVisibility() {
 
 export function getSettingsSnapshot() {
   return {
-    version: 19,
+    version: 20,
     type: "three-dimensional-mirrored-envelope-sharper-spectrogram",
     settings: Object.fromEntries(
       Object.keys(defaults).map((key) => [key, state[key]])
@@ -58,6 +58,13 @@ function sanitizeSettingValue(key, value) {
   }
 
   if (expectedType === "string") {
+    if (
+      key === "orientation" &&
+      !["landscape", "portrait"].includes(value)
+    ) {
+      return { ok: false };
+    }
+
     const select = document.getElementById(key);
 
     if (
@@ -120,6 +127,7 @@ export function applySettings(settings) {
   hooks.updateVideoExportFormatUi(false);
   fitViewport();
   updateViewportLogoLayout();
+  updateKeyboardControlText();
   rebuildWaveform();
   updateLighting();
   resetCamera();
@@ -195,7 +203,9 @@ export function syncControlsFromState() {
       continue;
     }
 
-    if (element.type === "checkbox") {
+    if (id === "orientation" && element.type === "checkbox") {
+      element.checked = state.orientation !== "portrait";
+    } else if (element.type === "checkbox") {
       element.checked = Boolean(state[id]);
     } else {
       element.value = String(state[id]);

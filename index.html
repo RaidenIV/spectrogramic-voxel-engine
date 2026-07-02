@@ -129,25 +129,19 @@
 </div>
 </div>
 <div class="section collapsed">
-<div class="section-title">Viewport</div>
-<div class="control">
-<div class="control-header">
-<label for="orientation">Orientation</label>
-</div>
-<select id="orientation">
-<option value="portrait">Portrait</option>
-<option selected="" value="landscape">Landscape</option>
-<option hidden="" value="square">Square — 1:1</option>
-</select>
-</div>
+<div class="section-title">DISPLAY</div>
 <div class="control">
 <div class="control-header">
 <label for="aspectRatio">Aspect Ratio</label>
 </div>
 <select id="aspectRatio">
-<option selected="" value="widescreen">Widescreen — 16:9</option>
+<option selected="" value="widescreen">Landscape — 16:9</option>
 <option value="square">Square — 1:1</option>
 </select>
+</div>
+<div class="control toggle-row orientation-toggle-row">
+<label for="orientation" id="orientationLabel">Landscape</label>
+<input aria-label="Landscape orientation" checked="" class="orientation-switch" id="orientation" role="switch" type="checkbox"/>
 </div>
 <div class="control">
 <div class="control-header">
@@ -162,10 +156,20 @@
 </div>
 </div>
 <div class="section collapsed">
-<div class="section-title">Viewport HUD</div>
+<div class="section-title">HUD</div>
 <div class="control toggle-row">
 <label for="hudVisible">Show HUD</label>
 <input checked="" id="hudVisible" type="checkbox"/>
+</div>
+<div class="control toggle-row">
+<label for="keyboardControlTextVisible">Show Keyboard Control Text</label>
+<input checked="" id="keyboardControlTextVisible" type="checkbox"/>
+</div>
+<div class="control">
+<div class="control-header">
+<label for="keyboardControlText">Keyboard Control Text</label>
+</div>
+<input id="keyboardControlText" maxlength="80" type="text" value="Spacebar: play/pause"/>
 </div>
 <div class="control toggle-row">
 <label for="logoVisible">Show Viewport Logo</label>
@@ -576,6 +580,33 @@
 <input id="autoRotateSpeed" max="5" min="0.1" step="0.1" type="range" value="0.7"/>
 </div>
 </div>
+<div class="section collapsed">
+<div class="section-title">PRESETS</div>
+<div class="control">
+<label class="file-button" for="importSettings">
+          Import Settings JSON
+        </label>
+<input accept=".json,application/json" id="importSettings" type="file"/>
+</div>
+<div class="control">
+<input id="presetName" maxlength="60" placeholder="Preset name" type="text"/>
+</div>
+<div class="control">
+<select id="savedPresets">
+<option value="">No Saved Presets</option>
+</select>
+</div>
+<div class="three-column">
+<button id="savePreset" type="button">Save</button>
+<button id="loadPreset" type="button">Load</button>
+<button id="deletePreset" type="button">Delete</button>
+</div>
+<button id="exportButton" type="button">Export JSON</button>
+<div class="hint">
+        JSON presets include the visual, material, lighting, performance,
+        camera, viewport, and export settings. Audio files are not embedded.
+      </div>
+</div>
 <div class="section">
 <div class="section-title">Export</div>
 <div class="control">
@@ -634,33 +665,6 @@
         export resolution.
       </div>
 </div>
-<div class="section collapsed">
-<div class="section-title">Presets &amp; Utilities</div>
-<div class="control">
-<label class="file-button" for="importSettings">
-          Import Settings JSON
-        </label>
-<input accept=".json,application/json" id="importSettings" type="file"/>
-</div>
-<div class="control">
-<input id="presetName" maxlength="60" placeholder="Preset name" type="text"/>
-</div>
-<div class="control">
-<select id="savedPresets">
-<option value="">No Saved Presets</option>
-</select>
-</div>
-<div class="three-column">
-<button id="savePreset" type="button">Save</button>
-<button id="loadPreset" type="button">Load</button>
-<button id="deletePreset" type="button">Delete</button>
-</div>
-<button id="exportButton" type="button">Export JSON</button>
-<div class="hint">
-        JSON presets include the visual, material, lighting, performance,
-        camera, viewport, and export settings. Audio files are not embedded.
-      </div>
-</div>
 <div aria-label="Logo" class="sidebar-logo">
 <svg aria-hidden="true" class="sidebar-logo-svg" focusable="false" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1280 446">
 <path d="M0 0 C29.34746643 24.61791605 46.00885598 55.36675978 49.4609375 93.75390625 C52.00260973 132.80323413 42.75332743 170.82992771 16.921875 200.890625 C15.89633454 202.05612524 14.86796814 203.21914904 13.8359375 204.37890625 C13.06507813 205.25160156 12.29421875 206.12429687 11.5 207.0234375 C-10.88562296 230.7821563 -44.29601051 241.3346875 -76.15405273 242.48706055 C-115.37484333 243.27359519 -153.11366427 236.39850888 -182.47583008 208.46777344 C-210.09417161 181.41094659 -220.80109544 144.67745279 -221.19140625 106.71972656 C-220.77673195 68.96955545 -208.20371397 35.19893884 -181.9765625 7.81640625 C-135.78463319 -37.2833634 -50.22027544 -39.55706627 0 0 Z M-131.21484375 48.12109375 C-142.87613481 61.62856115 -148.62811547 81.76256043 -149.1640625 99.37890625 C-149.20402344 100.6628125 -149.24398437 101.94671875 -149.28515625 103.26953125 C-149.74547578 125.8069837 -146.00824061 150.25631703 -130.7265625 167.87890625 C-119.26680698 179.66718764 -106.51652388 184.08260167 -90.05908203 184.42236328 C-72.95884946 184.35606819 -58.41546434 180.09466111 -45.5390625 168.44140625 C-30.09960496 152.22720891 -22.70912693 127.55403652 -23.015625 105.578125 C-24.07849625 82.67045245 -30.1616249 60.33192551 -47.4140625 44.12890625 C-71.02230417 25.18865782 -110.11536012 26.33838874 -131.21484375 48.12109375 Z " fill="#FEFEFE" transform="translate(923.1640625,49.62109375)"></path>
@@ -702,7 +706,7 @@
 <div class="overlay-label fps" hidden="" id="fpsCounter">FPS --</div>
 
 <div aria-label="Viewport controls" class="overlay-label mouse-help">
-<span>Left drag: rotate</span><span>Right drag: pan</span><span>Wheel: zoom</span><span>Spacebar: play/pause</span>
+<span>Left drag: rotate</span><span>Right drag: pan</span><span>Wheel: zoom</span><span id="keyboardControlTextDisplay">Spacebar: play/pause</span>
 </div>
 <div class="video-export-overlay" hidden="" id="videoExportOverlay">
 <div class="video-export-card">

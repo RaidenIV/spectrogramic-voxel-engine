@@ -2,9 +2,8 @@
 // FFT, audio analysis, offline sampling, and HUD spectrum/level data.
 import * as THREE from "three";
 import { HUD_ANALYSIS_FRAMES_PER_SECOND, HUD_ATTACK_MS, HUD_FREQUENCY_DB_MAX, HUD_FREQUENCY_DB_MIN, HUD_FREQUENCY_MAX_HZ, HUD_FREQUENCY_MIN_HZ, HUD_FREQUENCY_POINT_COUNT, HUD_MAX_ANALYSIS_FRAMES, HUD_MIN_DB_RANGE, HUD_RELEASE_MS } from "./config.js";
-import { audio, runtime, state } from "./core.js";
+import { audio, hooks, runtime, state } from "./core.js";
 import { clamp } from "./utils.js";
-import { currentHudPlaybackTime } from "./renderer.js";
 
 export function applySpatialSmoothing(
   raw,
@@ -710,7 +709,7 @@ export function getHudSpectrumData() {
   const playbackProgress =
     Number.isFinite(analysisDuration) && analysisDuration > 0
       ? clamp(
-          currentHudPlaybackTime() / analysisDuration,
+          hooks.currentHudPlaybackTime() / analysisDuration,
           0,
           1
         )
@@ -772,7 +771,7 @@ export function getHudWaveformData() {
 
   const sampleRate = buffer.sampleRate;
   const centerSample = Math.round(
-    clamp(currentHudPlaybackTime(), 0, buffer.duration) * sampleRate
+    clamp(hooks.currentHudPlaybackTime(), 0, buffer.duration) * sampleRate
   );
   const windowSamples = Math.min(
     buffer.length,
@@ -836,7 +835,7 @@ export function getHudLevelData() {
 
   const sampleRate = buffer.sampleRate;
   const centerSample = Math.round(
-    clamp(currentHudPlaybackTime(), 0, buffer.duration) * sampleRate
+    clamp(hooks.currentHudPlaybackTime(), 0, buffer.duration) * sampleRate
   );
   const windowSamples = Math.min(
     buffer.length,

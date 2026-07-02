@@ -9,12 +9,14 @@ index.html
 assets/
   css/
     main.css
+    loop-editor.css
   js/
     config.js    Immutable defaults, colormap tables, camera presets, HUD constants
     core.js      Shared state, DOM element handles, THREE.js scene setup, runtime state
     utils.js     Pure helpers (formatting, math, files, blobs)
     analysis.js  FFT, audio analysis, offline sampling, HUD spectrum/level data
-    renderer.js  Terrain geometry, materials, colormap shader, HUD drawing
+    renderer.js  Terrain geometry, materials, colormap LUT/shader, matrices, lighting
+    hud.js       HUD overlay: graphs, metadata, logo, static layer, scene+HUD compose
     viewport.js  Viewport sizing, resolution presets, camera presets, fullscreen
     playback.js  Audio graph, synchronized playback clock, timeline seek
     loop.js      Loop selection/enforcement, BPM detection, loop editor popup
@@ -26,9 +28,28 @@ assets/
 ```
 
 The JavaScript is split into focused ES modules that share a single `core.js`
-(state, DOM handles, and the mutable `runtime` object) so each concern can be
-edited in isolation. `app.js` imports the modules, binds all event listeners,
-and starts the render loop.
+(state, DOM handles, the mutable `runtime` object, and the `hooks` registry)
+so each concern can be edited in isolation. `app.js` imports the modules,
+binds all event listeners, and starts the render loop.
+
+The module graph is strictly one-directional (config → core → utils →
+analysis → renderer → hud → viewport → playback → loop → loader → controls →
+export → reset → app). Where a lower-level module needs a higher-level
+function, it calls through `core.hooks`, which the higher module registers at
+load time — no import cycles.
+
+## Testing
+
+```bash
+npm install
+npm test
+```
+
+`npm test` boots the entire app headlessly (jsdom + stubbed WebGL/canvas),
+sweeps the UI controls, and probes the robustness features (preset
+validation, WebCodecs detection, context-loss handlers, error surfacing).
+Run it after any refactor — it catches module-graph and wiring regressions
+without opening a browser.
 
 ## Local testing
 

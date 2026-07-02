@@ -8,6 +8,18 @@ import { defaults } from "./config.js";
 // the single `runtime` object so the split preserves the monolith's behavior.
 export const runtime = {};
 
+// Late-bound hooks registry (improvement: one-directional module graph).
+// Higher-level modules register implementations at evaluation time; lower-level
+// modules call through core.hooks instead of importing upward, which keeps the
+// dependency graph acyclic. Every slot throws loudly if called unregistered.
+export const hooks = {};
+for (const name of ["currentHudPlaybackTime", "getSelectedLoopRange", "getViewportFormatName", "hasPartialLoopSelection", "setOutputValue", "setVideoExportStatus", "syncLoopButton", "updateVideoExportFormatUi"]) {
+  hooks[name] = (...args) => {
+    throw new Error(`core.hooks.${name} called before its module registered it`);
+  };
+}
+
+
 export const viewport = document.getElementById("viewport");
 
 export const viewportFrame = document.getElementById("viewportFrame");

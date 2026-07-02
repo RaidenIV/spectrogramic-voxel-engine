@@ -1,13 +1,13 @@
 // controls.js — generated module split of the Spectrogramic Voxel Engine (behavior unchanged)
 // Control bindings, settings snapshot/apply, local presets, collapsible sections.
 import { ALLOWED_COLORMAPS, LOCAL_PRESET_KEY, defaults } from "./config.js";
-import { audio, controls, runtime, state, status } from "./core.js";
+import { audio, controls, hooks, runtime, state, status } from "./core.js";
 import { clamp } from "./utils.js";
 import { rebuildHudFrequencySpectrogram } from "./analysis.js";
-import { applyViewportColorMode, rebuildWaveform, updateLighting, updateViewportLogoLayout } from "./renderer.js";
+import { rebuildWaveform, updateLighting } from "./renderer.js";
+import { applyViewportColorMode, updateViewportLogoLayout } from "./hud.js";
 import { fitViewport, resetCamera, updateExportFormatControls, updateRendererResolution } from "./viewport.js";
 import { updateOutputAudioLevel } from "./playback.js";
-import { updateVideoExportFormatUi } from "./export.js";
 
 export function updateMaterialControlVisibility() {
   document.querySelectorAll(".material-control").forEach((control) => {
@@ -26,6 +26,57 @@ export function getSettingsSnapshot() {
   };
 }
 
+// Preset schema validation: values are checked against the same constraints
+// the UI enforces — numeric keys clamp to their input's min/max, string keys
+// must match an option of their <select>, colors must be #rrggbb, and
+// non-finite numbers (NaN/Infinity survive a typeof check) are rejected.
+// Deriving bounds from the DOM keeps this in lockstep with the controls
+// without a duplicate hand-written schema.
+function sanitizeSettingValue(key, value) {
+  const expectedType = typeof defaults[key];
+
+  if (typeof value !== expectedType) {
+    return { ok: false };
+  }
+
+  if (expectedType === "number") {
+    if (!Number.isFinite(value)) {
+      return { ok: false };
+    }
+    const input = document.getElementById(key);
+
+    if (input && input.tagName === "INPUT") {
+      const min = parseFloat(input.min);
+      const max = parseFloat(input.max);
+      let clampedValue = value;
+
+      if (Number.isFinite(min)) clampedValue = Math.max(min, clampedValue);
+      if (Number.isFinite(max)) clampedValue = Math.min(max, clampedValue);
+      return { ok: true, value: clampedValue, clamped: clampedValue !== value };
+    }
+    return { ok: true, value };
+  }
+
+  if (expectedType === "string") {
+    const select = document.getElementById(key);
+
+    if (
+      select &&
+      select.tagName === "SELECT" &&
+      !Array.from(select.options).some((option) => option.value === value)
+    ) {
+      return { ok: false };
+    }
+
+    if (/Color$/.test(key) && !/^#[0-9a-fA-F]{6}$/.test(value)) {
+      return { ok: false };
+    }
+    return { ok: true, value };
+  }
+
+  return { ok: true, value };
+}
+
 export function applySettings(settings) {
   if (!settings || typeof settings !== "object") {
     throw new Error("The settings object is invalid.");
@@ -33,13 +84,18 @@ export function applySettings(settings) {
 
   const hasExplicitLightMode =
     Object.prototype.hasOwnProperty.call(settings, "lightMode");
+  let rejectedCount = 0;
+  let clampedCount = 0;
 
   for (const key of Object.keys(defaults)) {
     if (Object.prototype.hasOwnProperty.call(settings, key)) {
-      const expectedType = typeof defaults[key];
+      const result = sanitizeSettingValue(key, settings[key]);
 
-      if (typeof settings[key] === expectedType) {
-        state[key] = settings[key];
+      if (result.ok) {
+        state[key] = result.value;
+        if (result.clamped) clampedCount++;
+      } else {
+        rejectedCount++;
       }
     }
   }
@@ -61,7 +117,7 @@ export function applySettings(settings) {
   updateMaterialControlVisibility();
 
   updateExportFormatControls();
-  updateVideoExportFormatUi(false);
+  hooks.updateVideoExportFormatUi(false);
   fitViewport();
   updateViewportLogoLayout();
   rebuildWaveform();
@@ -80,6 +136,13 @@ export function applySettings(settings) {
     rebuildHudFrequencySpectrogram().catch((error) => {
       if (error?.name !== "AbortError") console.error(error);
     });
+  }
+
+  if (rejectedCount > 0 || clampedCount > 0) {
+    const parts = [];
+    if (rejectedCount > 0) parts.push(`${rejectedCount} invalid value(s) ignored`);
+    if (clampedCount > 0) parts.push(`${clampedCount} value(s) clamped to range`);
+    status.textContent = `Preset applied — ${parts.join(", ")}.`;
   }
 }
 
@@ -561,3 +624,6 @@ export function initializeCollapsibleSections() {
     });
   });
 }
+
+// Register late-bound implementations on the core hooks registry.
+hooks.setOutputValue = setOutputValue;

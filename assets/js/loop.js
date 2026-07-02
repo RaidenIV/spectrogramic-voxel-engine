@@ -1,6 +1,6 @@
 // loop.js — generated module split of the Spectrogramic Voxel Engine (behavior unchanged)
 // Loop selection/enforcement, BPM detection, loop editor popup.
-import { audio, loopButton, loopStatus, runtime, state } from "./core.js";
+import { audio, hooks, loopButton, loopStatus, runtime, state } from "./core.js";
 import { clamp, formatTime } from "./utils.js";
 import { clearHistory } from "./renderer.js";
 import { getTrackDuration, syncPlaybackTimeline } from "./playback.js";
@@ -1215,3 +1215,8 @@ export const loopModalController = (() => {
   }
   return { open: openLoopPopup, close: closePopup, syncButton: updateMainLoopButton };
 })();
+
+// Register late-bound implementations on the core hooks registry.
+hooks.getSelectedLoopRange = getSelectedLoopRange;
+hooks.hasPartialLoopSelection = hasPartialLoopSelection;
+hooks.syncLoopButton = syncLoopButton;

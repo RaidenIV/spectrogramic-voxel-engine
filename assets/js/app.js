@@ -228,12 +228,32 @@ bindCheckbox(
   updateKeyboardControlText
 );
 
-document
-  .getElementById("keyboardControlText")
-  .addEventListener("input", (event) => {
-    state.keyboardControlText = event.target.value;
-    updateKeyboardControlText();
-  });
+bindNumber(
+  "keyboardControlTextFontSize",
+  "keyboardControlTextFontSizeValue",
+  "keyboardControlTextFontSize",
+  0,
+  updateKeyboardControlText,
+  "px"
+);
+
+bindNumber(
+  "keyboardControlTextX",
+  "keyboardControlTextXValue",
+  "keyboardControlTextX",
+  1,
+  updateKeyboardControlText,
+  "%"
+);
+
+bindNumber(
+  "keyboardControlTextY",
+  "keyboardControlTextYValue",
+  "keyboardControlTextY",
+  1,
+  updateKeyboardControlText,
+  "%"
+);
 
 bindCheckbox("logoVisible", "logoVisible", () => {
   updateViewportLogoLayout();

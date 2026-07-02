@@ -19,7 +19,8 @@ export const SECTION_DEFAULT_KEYS = Object.freeze({
   DISPLAY: ["orientation", "aspectRatio", "viewportSize"],
   HUD: [
     "hudVisible", "keyboardControlTextVisible", "keyboardControlText",
-    "logoVisible", "logoX", "logoY", "logoSize",
+    "keyboardControlTextFontSize", "keyboardControlTextX",
+    "keyboardControlTextY", "logoVisible", "logoX", "logoY", "logoSize",
     "frequencyGraphPlacement", "waveformGraphPlacement",
     "levelsGraphPlacement", "graphWidth", "graphHeight",
     "metadataX", "metadataY", "guiTextSize"

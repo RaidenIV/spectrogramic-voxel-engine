@@ -17,6 +17,9 @@ export function updateKeyboardControlText() {
   const text = String(state.keyboardControlText || "").trim();
   controlText.textContent = text;
   controlText.hidden = !state.keyboardControlTextVisible || text.length === 0;
+  controlText.style.fontSize = `${state.keyboardControlTextFontSize}px`;
+  controlText.style.left = `${state.keyboardControlTextX}%`;
+  controlText.style.top = `${state.keyboardControlTextY}%`;
 }
 
 export function rebuildHudCanvasTexture() {

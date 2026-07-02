@@ -18,7 +18,7 @@ export function updateMaterialControlVisibility() {
 
 export function getSettingsSnapshot() {
   return {
-    version: 20,
+    version: 21,
     type: "three-dimensional-mirrored-envelope-sharper-spectrogram",
     settings: Object.fromEntries(
       Object.keys(defaults).map((key) => [key, state[key]])
@@ -303,6 +303,14 @@ export function syncControlsFromState() {
   setOutputValue("metadataXValue", state.metadataX, 2, "%");
   setOutputValue("metadataYValue", state.metadataY, 2, "%");
   setOutputValue("guiTextSizeValue", state.guiTextSize, 2, "%");
+  setOutputValue(
+    "keyboardControlTextFontSizeValue",
+    state.keyboardControlTextFontSize,
+    0,
+    "px"
+  );
+  setOutputValue("keyboardControlTextXValue", state.keyboardControlTextX, 1, "%");
+  setOutputValue("keyboardControlTextYValue", state.keyboardControlTextY, 1, "%");
   setOutputValue("logoXValue", state.logoX, 1, "%");
   setOutputValue("logoYValue", state.logoY, 1, "%");
   setOutputValue("logoSizeValue", state.logoSize, 1, "%");

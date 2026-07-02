@@ -710,10 +710,6 @@ input:focus-visible,
   min-width: 0;
   flex: none;
   overflow-y: auto;
-  scrollbar-width: thin;
-  /* Reserve the scrollbar gutter before overflow occurs so the controls,
-     headings, and footer logo never shift horizontally (SIDEBAR.md section 3). */
-  scrollbar-gutter: stable;
   padding: 18px;
   border: 0;
   border-right: 1px solid var(--panel-border);
@@ -1373,6 +1369,10 @@ input[type="number"],
 
 
 /* Stable sidebar width and animated section expansion. */
+.panel {
+  scrollbar-gutter: stable;
+}
+
 .panel > .section {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);

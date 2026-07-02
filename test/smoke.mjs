@@ -164,7 +164,12 @@ check('uncaught errors surface in status bar',
   check('exactly one .sidebar-logo rule', logoRuleCount === 1);
   const logoRule = css.split('.sidebar-logo {')[1].split('}')[0];
   check('logo bottom-anchored via margin: auto auto 6px', logoRule.includes('margin: auto auto 6px'));
-  check('scrolling panel reserves scrollbar gutter', /overflow-y: auto;[\s\S]{0,300}scrollbar-gutter: stable;/.test(css));
+  check('global panel scrollbar gutter under animation comment',
+    css.includes('/* Stable sidebar width and animated section expansion. */\n.panel {\n  scrollbar-gutter: stable;\n}'));
+  check('section expansion animation CSS intact',
+    css.includes('transition: grid-template-rows 220ms ease;') &&
+    css.includes('grid-template-rows: auto minmax(0, 0fr);') &&
+    css.includes('opacity 160ms ease 45ms,'));
   const logoWrap = document.querySelector('.sidebar-logo');
   const panel = document.getElementById('controlPanel');
   check('logo is the last element in the sidebar panel', panel && panel.lastElementChild === logoWrap);

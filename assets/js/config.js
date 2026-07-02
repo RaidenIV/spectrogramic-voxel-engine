@@ -75,7 +75,7 @@ export const defaults = {
   guiTextSize: 0.75,
   hudVisible: true,
   keyboardControlTextVisible: true,
-  keyboardControlText: "Spacebar: play/pause",
+  keyboardControlText: "LEFT DRAG: ROTATE | RIGHT DRAG: PAN | WHEEL: ZOOM | SPACEBAR: PLAY/PAUSE",
   keyboardControlTextFontSize: 11,
   keyboardControlTextX: 75,
   keyboardControlTextY: 96,

@@ -6,6 +6,7 @@ import { audio, camera, hooks, hudCamera, hudCanvas, hudContext, hudDrawingBuffe
 import { clamp, hexToHudRgba } from "./utils.js";
 import { getHudLevelData, getHudSpectrumData, getHudWaveformData } from "./analysis.js";
 
+const KEYBOARD_CONTROL_TEXT = "LEFT DRAG: ROTATE | RIGHT DRAG: PAN | WHEEL: ZOOM | SPACEBAR: PLAY/PAUSE";
 
 export function updateKeyboardControlText() {
   const controlText = document.getElementById("keyboardControlTextDisplay");
@@ -14,9 +15,8 @@ export function updateKeyboardControlText() {
     return;
   }
 
-  const text = String(state.keyboardControlText || "").trim();
-  controlText.textContent = text;
-  controlText.hidden = !state.keyboardControlTextVisible || text.length === 0;
+  controlText.textContent = KEYBOARD_CONTROL_TEXT;
+  controlText.hidden = !state.keyboardControlTextVisible;
   controlText.style.fontSize = `${state.keyboardControlTextFontSize}px`;
 
   const viewportElement = document.getElementById("viewport");

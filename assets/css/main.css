@@ -132,12 +132,6 @@ canvas {
   white-space: nowrap;
 }
 
-.keyboard-control-text::before {
-  margin-right: 18px;
-  margin-left: 18px;
-  color: rgba(255, 255, 255, 0.22);
-  content: "·";
-}
 
 #viewport:focus {
   outline: none;

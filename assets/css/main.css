@@ -519,15 +519,19 @@ button.loop-active:hover:not(:disabled) {
   flex: 0 0 auto;
 }
 
+/* Sidebar footer logo (SIDEBAR.md section 14): the top auto margin pins the
+   logo to the bottom edge because .panel is a vertical flex container; when
+   the controls overflow, the logo follows the final section in scroll flow.
+   Never position it fixed/absolute. */
 .sidebar-logo {
-  position: static;
-  bottom: auto;
-  z-index: auto;
   flex: 0 0 auto;
   width: min(93.75px, 32.5%);
-  margin: auto auto 0;
-  padding: 20px 0 8px;
-  background: transparent;
+  margin: auto auto 6px;
+  padding-top: 24px;
+  color: #ffffff;
+  opacity: 0.92;
+  line-height: 0;
+  pointer-events: none;
 }
 
 .playback-mute-control {
@@ -706,6 +710,10 @@ input:focus-visible,
   min-width: 0;
   flex: none;
   overflow-y: auto;
+  scrollbar-width: thin;
+  /* Reserve the scrollbar gutter before overflow occurs so the controls,
+     headings, and footer logo never shift horizontally (SIDEBAR.md section 3). */
+  scrollbar-gutter: stable;
   padding: 18px;
   border: 0;
   border-right: 1px solid var(--panel-border);
@@ -1061,15 +1069,6 @@ input:focus-visible,
   background: #08080d;
 }
 
-.sidebar-logo {
-  width: min(93.75px, 32.5%);
-  margin: 24px auto 6px;
-  color: #ffffff;
-  opacity: 0.92;
-  line-height: 0;
-  pointer-events: none;
-}
-
 .sidebar-logo-svg {
   display: block;
   width: 100%;
@@ -1374,10 +1373,6 @@ input[type="number"],
 
 
 /* Stable sidebar width and animated section expansion. */
-.panel {
-  scrollbar-gutter: stable;
-}
-
 .panel > .section {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);

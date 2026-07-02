@@ -154,6 +154,27 @@ await new Promise(r => setTimeout(r, 50));
 check('uncaught errors surface in status bar',
   (document.getElementById('status')?.textContent || '').includes('smoke-test synthetic failure'));
 
+
+// Sidebar logo (SIDEBAR.md section 14): bottom-anchored flex footer, single
+// canonical CSS rule, stable scrollbar gutter, correct SVG attribute casing.
+{
+  const { readFileSync: rf } = await import('fs');
+  const css = rf(new URL('assets/css/main.css', ROOT), 'utf8');
+  const logoRuleCount = (css.match(/\.sidebar-logo \{/g) || []).length;
+  check('exactly one .sidebar-logo rule', logoRuleCount === 1);
+  const logoRule = css.split('.sidebar-logo {')[1].split('}')[0];
+  check('logo bottom-anchored via margin: auto auto 6px', logoRule.includes('margin: auto auto 6px'));
+  check('scrolling panel reserves scrollbar gutter', /overflow-y: auto;[\s\S]{0,300}scrollbar-gutter: stable;/.test(css));
+  const logoWrap = document.querySelector('.sidebar-logo');
+  const panel = document.getElementById('controlPanel');
+  check('logo is the last element in the sidebar panel', panel && panel.lastElementChild === logoWrap);
+  const logoSvg = document.querySelector('.sidebar-logo-svg');
+  check('logo SVG has viewBox and preserveAspectRatio',
+    logoSvg?.getAttribute('viewBox') === '0 0 1280 446' &&
+    logoSvg?.getAttribute('preserveAspectRatio') === 'xMidYMid meet');
+  check('logo SVG hidden from assistive technology', logoSvg?.getAttribute('aria-hidden') === 'true');
+}
+
 await new Promise(r => setTimeout(r, 100));
 console.log(failures === 0 ? '\nALL CHECKS PASSED' : `\n${failures} CHECK(S) FAILED`);
 process.exit(failures === 0 ? 0 : 1);

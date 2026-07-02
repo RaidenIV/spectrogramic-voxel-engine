@@ -1373,22 +1373,16 @@ input[type="number"],
   scrollbar-gutter: stable;
 }
 
-/* Keep the section title outside the animated track so it never shifts. */
-.panel > .section > .section-title {
-  margin-bottom: 0;
-}
-
-.panel > .section > .section-content {
+.panel > .section {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
-  overflow: hidden;
   transition: grid-template-rows 220ms ease;
 }
 
-.panel > .section > .section-content > .section-content-inner {
-  grid-row: 2;
+.panel > .section > .section-content {
+  display: block;
   min-height: 0;
-  padding-top: 12px;
+  overflow: hidden;
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -1398,16 +1392,16 @@ input[type="number"],
     visibility 0s linear 0s;
 }
 
-.panel > .section.collapsed > .section-content {
-  display: grid;
+.panel > .section.collapsed {
   grid-template-rows: auto minmax(0, 0fr);
-  pointer-events: none;
 }
 
-.panel > .section.collapsed > .section-content > .section-content-inner {
+.panel > .section.collapsed > .section-content {
+  display: block;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-4px);
+  pointer-events: none;
   transition:
     opacity 120ms ease,
     transform 180ms ease,
@@ -1415,8 +1409,8 @@ input[type="number"],
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .panel > .section > .section-content,
-  .panel > .section > .section-content > .section-content-inner {
+  .panel > .section,
+  .panel > .section > .section-content {
     transition: none;
   }
 }

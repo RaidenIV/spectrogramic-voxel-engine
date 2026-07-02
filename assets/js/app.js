@@ -1,9 +1,10 @@
 // app.js — generated module split of the Spectrogramic Voxel Engine (behavior unchanged)
 // Entry point: wires events and boots the app.
-import { app, applyCameraPresetButton, aspectRatioInput, audio, audioFileInput, camera, cameraPresetInput, clearButton, controls, exportVideoButton, loopButton, orientationInput, playButton, runtime, sidebarToggle, sidebarToggleIcon, state, status, timeline, videoBitrateInput, videoExportCancel, videoFileTypeInput, videoFrameRateInput, viewport, viewportResolutionInput } from "./core.js";
+import { app, applyCameraPresetButton, aspectRatioInput, audio, audioFileInput, camera, cameraPresetInput, clearButton, controls, exportVideoButton, renderer, loopButton, orientationInput, playButton, runtime, sidebarToggle, sidebarToggleIcon, state, status, timeline, videoBitrateInput, videoExportCancel, videoFileTypeInput, videoFrameRateInput, viewport, viewportResolutionInput } from "./core.js";
 import { isFirefoxBrowser } from "./utils.js";
 import { computeOfflineSpectrum, rebuildHudFrequencySpectrogram } from "./analysis.js";
-import { applyHudFormatPreset, applyViewportColorMode, clearHistory, rebuildWaveform, renderSceneWithHud, updateFps, updateLighting, updateMaterialProperties, updateMatrices, updateViewportLogoLayout } from "./renderer.js";
+import { clearHistory, rebuildWaveform, updateFps, updateLighting, updateMaterialProperties, updateMatrices } from "./renderer.js";
+import { applyHudFormatPreset, applyViewportColorMode, renderSceneWithHud, updateViewportLogoLayout } from "./hud.js";
 import { applyCameraPreset, fitViewport, getViewportResolutionDimensions, markCameraPresetCustom, resetCamera, resize, toggleFullscreen, updateExportFormatControls, updateRendererResolution, updateSinusoidalCamera, viewportResizeObserver } from "./viewport.js";
 import { commitTimelineSeek, syncPlaybackTimeline, synchronizeCascadeToAudioTime, togglePlayback, updateOutputAudioLevel } from "./playback.js";
 import { enforceSelectedLoop, loopModalController, syncLoopButton } from "./loop.js";
@@ -667,6 +668,72 @@ if (window.location.protocol === "file:") {
     "For reliable audio and module loading, serve this file through localhost.";
 }
 
+// --- Robustness: WebGL context loss/restore handling -----------------------
+// Long sessions and 4K exports can evict the GL context. Without these
+// handlers the viewport silently freezes; with them we pause, inform the
+// user, and rebuild GPU-side resources (materials, shaders, textures) once
+// the browser hands the context back.
+renderer.domElement.addEventListener("webglcontextlost", (event) => {
+  event.preventDefault();
+  status.textContent =
+    "Graphics context lost — waiting for the browser to restore it…";
+});
+
+renderer.domElement.addEventListener("webglcontextrestored", () => {
+  try {
+    rebuildWaveform();
+    updateLighting();
+    updateMaterialProperties();
+    applyViewportColorMode(true);
+    state.hudLayer = null;
+    runtime.hudLastDynamicKey = null;
+    runtime.matrixDirty = true;
+    markRenderActivity();
+    status.textContent = "Graphics context restored.";
+  } catch (error) {
+    console.error("Context restore failed:", error);
+    status.textContent =
+      "Graphics context restored, but rebuilding failed — reload the page.";
+  }
+});
+
+// --- Robustness: WebCodecs feature detection --------------------------------
+// The MP4/MKV pipeline requires VideoEncoder. Disabling the button up front
+// with an explanation beats a cryptic mid-export failure on browsers without
+// WebCodecs support.
+if (typeof window.VideoEncoder === "undefined") {
+  exportVideoButton.disabled = true;
+  exportVideoButton.title =
+    "Video export requires the WebCodecs API, which this browser does not support. PNG and settings export still work.";
+  setVideoExportStatus(
+    "Video export unavailable: this browser lacks WebCodecs (VideoEncoder).",
+    "error"
+  );
+}
+
+// --- Robustness: surface uncaught errors in the status bar ------------------
+// Console-only failures look like a frozen app. Mirror the first line of any
+// uncaught error/rejection into the visible status element (rate-limited so
+// a per-frame error can't thrash the DOM).
+{
+  let lastSurfacedErrorAt = 0;
+
+  const surfaceError = (error) => {
+    const now = Date.now();
+    if (now - lastSurfacedErrorAt < 2000) return;
+    lastSurfacedErrorAt = now;
+    const message = String(
+      (error && (error.message || error.reason?.message || error.reason)) ||
+        error ||
+        "Unknown error"
+    ).split("\n")[0];
+    status.textContent = `Error: ${message} (see console)`;
+  };
+
+  window.addEventListener("error", (event) => surfaceError(event.error || event.message));
+  window.addEventListener("unhandledrejection", (event) => surfaceError(event));
+}
+
 initializeSectionResetButtons();
 
 initializeCollapsibleSections();
@@ -703,6 +770,24 @@ controls.autoRotate = state.autoRotate;
 
 controls.autoRotateSpeed = state.autoRotateSpeed;
 
+// Idle render skip: the scene only re-renders while something can visibly
+// change (playback, camera motion/damping, control edits), with a short
+// cooldown so eased transitions settle. Cuts idle GPU/CPU use to near zero,
+// which matters when the tool is embedded alongside other pages.
+const RENDER_IDLE_COOLDOWN_MS = 1200;
+runtime.lastRenderActivity = performance.now();
+
+function markRenderActivity() {
+  runtime.lastRenderActivity = performance.now();
+}
+
+controls.addEventListener("change", markRenderActivity);
+window.addEventListener("resize", markRenderActivity);
+document.addEventListener("input", markRenderActivity, true);
+document.addEventListener("change", markRenderActivity, true);
+document.addEventListener("pointerdown", markRenderActivity, true);
+document.addEventListener("keydown", markRenderActivity, true);
+
 function animate(now) {
   requestAnimationFrame(animate);
 
@@ -716,10 +801,29 @@ function animate(now) {
     syncPlaybackTimeline(audio.currentTime);
   }
 
+  const isPlaying = Boolean(audio.src) && !audio.paused;
+
+  if (
+    isPlaying ||
+    state.autoRotate ||
+    state.sinusoidalCameraActive ||
+    runtime.matrixDirty
+  ) {
+    runtime.lastRenderActivity = now;
+  }
+
+  // OrbitControls damping: update() returns true while the camera still moves.
+  if (controls.update()) {
+    runtime.lastRenderActivity = now;
+  }
+
+  if (now - runtime.lastRenderActivity > RENDER_IDLE_COOLDOWN_MS) {
+    return;
+  }
+
   synchronizeCascadeToAudioTime();
   updateSinusoidalCamera(now);
   updateMatrices();
-  controls.update();
   renderSceneWithHud();
   updateFps(now);
 }

@@ -594,14 +594,6 @@ export function initializeCollapsibleSections() {
       section.appendChild(content);
     }
 
-    let contentInner = content.querySelector(":scope > .section-content-inner");
-    if (!contentInner) {
-      contentInner = document.createElement("div");
-      contentInner.className = "section-content-inner";
-      [...content.children].forEach((child) => contentInner.appendChild(child));
-      content.appendChild(contentInner);
-    }
-
     const contentId = `sidebar-section-${index + 1}`;
     const initiallyCollapsed = section.classList.contains("collapsed");
     content.id = contentId;

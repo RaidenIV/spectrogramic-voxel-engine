@@ -1,10 +1,11 @@
 // export.js — generated module split of the Spectrogramic Voxel Engine (behavior unchanged)
 // PNG / video / JSON settings export.
 import * as THREE from "three";
-import { audio, camera, controls, exportFileNameInput, exportVideoButton, renderer, runtime, state, status, videoBitrateInput, videoExportCancel, videoExportOverlay, videoExportOverlayProgress, videoExportOverlayStatus, videoExportProgress, videoExportStatus, videoFileTypeInput, videoFrameRateInput } from "./core.js";
+import { audio, camera, controls, exportFileNameInput, exportVideoButton, hooks, renderer, runtime, state, status, videoBitrateInput, videoExportCancel, videoExportOverlay, videoExportOverlayProgress, videoExportOverlayStatus, videoExportProgress, videoExportStatus, videoFileTypeInput, videoFrameRateInput } from "./core.js";
 import { canvasToBlob, clamp, downloadBlob, formatTime, isFirefoxBrowser, nextEventLoopTurn, sanitizeFileName } from "./utils.js";
 import { appendOfflineWaveformRow } from "./analysis.js";
-import { prepareExportLogoImage, renderSceneWithHud, updateMatrices } from "./renderer.js";
+import { updateMatrices } from "./renderer.js";
+import { prepareExportLogoImage, renderSceneWithHud } from "./hud.js";
 import { applyViewportCameraProjection, fitViewport, getViewportResolutionDimensions, getWebpageRenderDimensions, positionSinusoidalCamera } from "./viewport.js";
 import { ensureAudioGraph } from "./playback.js";
 import { getSelectedLoopRange, hasPartialLoopSelection } from "./loop.js";
@@ -1048,3 +1049,7 @@ export function updateVideoExportFormatUi(announce = false) {
     );
   }
 }
+
+// Register late-bound implementations on the core hooks registry.
+hooks.setVideoExportStatus = setVideoExportStatus;
+hooks.updateVideoExportFormatUi = updateVideoExportFormatUi;

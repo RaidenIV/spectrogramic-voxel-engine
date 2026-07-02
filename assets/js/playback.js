@@ -1,10 +1,9 @@
 // playback.js — generated module split of the Spectrogramic Voxel Engine (behavior unchanged)
 // Audio graph, synchronized playback clock, timeline seek.
-import { audio, currentTimeLabel, durationLabel, playButton, runtime, state, status, timeline } from "./core.js";
+import { audio, currentTimeLabel, durationLabel, hooks, playButton, runtime, state, status, timeline } from "./core.js";
 import { clamp, formatTime } from "./utils.js";
 import { appendWaveformRow } from "./analysis.js";
 import { clearHistory } from "./renderer.js";
-import { getSelectedLoopRange, hasPartialLoopSelection, syncLoopButton } from "./loop.js";
 
 export function getTrackDuration() {
   const decodedDuration = runtime.decodedAudioBuffer?.duration;
@@ -21,8 +20,8 @@ export function getTrackDuration() {
 export function getPlaybackTimelineRange() {
   const duration = getTrackDuration();
 
-  if (state.audioLoop && hasPartialLoopSelection()) {
-    const range = getSelectedLoopRange();
+  if (state.audioLoop && hooks.hasPartialLoopSelection()) {
+    const range = hooks.getSelectedLoopRange();
     return { ...range, isLoop: true };
   }
 
@@ -141,8 +140,8 @@ export async function togglePlayback() {
     await ensureAudioGraph();
 
     if (audio.paused) {
-      if (state.audioLoop && hasPartialLoopSelection()) {
-        const range = getSelectedLoopRange();
+      if (state.audioLoop && hooks.hasPartialLoopSelection()) {
+        const range = hooks.getSelectedLoopRange();
 
         if (
           audio.currentTime < range.start ||
@@ -201,5 +200,5 @@ export function commitTimelineSeek() {
   runtime.isSeeking = false;
   syncPlaybackTimeline(audio.currentTime);
   clearHistory();
-  syncLoopButton();
+  hooks.syncLoopButton();
 }

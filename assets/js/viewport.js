@@ -2,10 +2,10 @@
 // Viewport sizing, resolution presets, camera presets, fullscreen, resize.
 import * as THREE from "three";
 import { BASELINE_CAMERA_VERTICAL_FOV, BASELINE_VIEWPORT_ASPECT, CAMERA_PRESETS, PREVIEW_MAX_RENDER_SCALE, PREVIEW_MIN_RENDER_SCALE } from "./config.js";
-import { aspectRatioInput, camera, cameraPresetInput, controls, orientationInput, renderer, runtime, state, status, viewport, viewportFrame } from "./core.js";
+import { aspectRatioInput, camera, cameraPresetInput, controls, hooks, orientationInput, renderer, runtime, state, status, viewport, viewportFrame } from "./core.js";
 import { clamp } from "./utils.js";
-import { getHistoryDepthCenter, updateViewportLogoLayout } from "./renderer.js";
-import { setOutputValue } from "./controls.js";
+import { getHistoryDepthCenter } from "./renderer.js";
+import { updateViewportLogoLayout } from "./hud.js";
 
 export function getViewportFormatName() {
   if (state.aspectRatio === "square") {
@@ -287,8 +287,8 @@ export function applyCameraPreset(
     );
   }
 
-  setOutputValue("cameraHeightValue", y, 0);
-  setOutputValue("cameraDistanceValue", Math.abs(z), 0);
+  hooks.setOutputValue("cameraHeightValue", y, 0);
+  hooks.setOutputValue("cameraDistanceValue", Math.abs(z), 0);
   camera.zoom = state.cameraZoom;
   camera.updateProjectionMatrix();
   controls.update();
@@ -315,3 +315,6 @@ export const viewportResizeObserver = new ResizeObserver(() => {
     fitViewport();
   }
 });
+
+// Register late-bound implementations on the core hooks registry.
+hooks.getViewportFormatName = getViewportFormatName;

@@ -3,7 +3,8 @@
 import { defaults } from "./config.js";
 import { audio, cameraPresetInput, controls, exportFileNameInput, runtime, state, status } from "./core.js";
 import { rebuildHudFrequencySpectrogram } from "./analysis.js";
-import { applyViewportColorMode, clearHistory, rebuildWaveform, updateLighting, updateMatrices, updateViewportLogoLayout } from "./renderer.js";
+import { clearHistory, rebuildWaveform, updateLighting, updateMatrices } from "./renderer.js";
+import { applyViewportColorMode, updateViewportLogoLayout } from "./hud.js";
 import { applyCameraPreset, fitViewport, resetCamera, updateExportFormatControls, updateRendererResolution } from "./viewport.js";
 import { updateOutputAudioLevel } from "./playback.js";
 import { syncControlsFromState, updateMaterialControlVisibility } from "./controls.js";

@@ -1,12 +1,11 @@
 // loader.js — generated module split of the Spectrogramic Voxel Engine (behavior unchanged)
 // Audio file loading and progress UI.
-import { audio, audioLoadProgress, audioLoadProgressText, audioLoadProgressWrap, audioLoadStage, exportVideoButton, fftLoadProgress, fftLoadProgressText, fftLoadProgressWrap, fftLoadStage, playButton, runtime, state, status, timeline } from "./core.js";
+import { audio, audioLoadProgress, audioLoadProgressText, audioLoadProgressWrap, audioLoadStage, exportVideoButton, fftLoadProgress, fftLoadProgressText, fftLoadProgressWrap, fftLoadStage, hooks, playButton, runtime, state, status, timeline } from "./core.js";
 import { clamp, formatTime } from "./utils.js";
 import { rebuildHudFrequencySpectrogram } from "./analysis.js";
 import { clearHistory } from "./renderer.js";
 import { syncPlaybackTimeline } from "./playback.js";
 import { initializeLoopSelection, syncLoopButton } from "./loop.js";
-import { setVideoExportStatus } from "./export.js";
 
 export function setAudioLoadProgress(percent, stage = "Loading audio…") {
   window.clearTimeout(runtime.audioLoadProgressHideTimer);
@@ -128,7 +127,7 @@ export async function loadAudioFile(file) {
   syncLoopButton();
   exportVideoButton.disabled = true;
   status.textContent = `Analyzing ${file.name}…`;
-  setVideoExportStatus("Decoding audio for deterministic export…", "active");
+  hooks.setVideoExportStatus("Decoding audio for deterministic export…", "active");
   playButton.disabled = true;
   timeline.disabled = true;
   playButton.textContent = "Play";
@@ -183,7 +182,7 @@ export async function loadAudioFile(file) {
     syncPlaybackTimeline(0);
     exportVideoButton.disabled = false;
     status.textContent = file.name;
-    setVideoExportStatus(
+    hooks.setVideoExportStatus(
       `Ready · ${formatTime(runtime.decodedAudioBuffer.duration)} decoded audio`,
       "idle"
     );
@@ -206,7 +205,7 @@ export async function loadAudioFile(file) {
     runtime.loopWaveformPeaks = null;
     syncLoopButton();
     status.textContent = file.name;
-    setVideoExportStatus(
+    hooks.setVideoExportStatus(
       `Audio analysis failed: ${error.message}`,
       "error"
     );

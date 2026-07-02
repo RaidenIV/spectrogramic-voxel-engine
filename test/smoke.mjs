@@ -166,10 +166,19 @@ check('uncaught errors surface in status bar',
   check('logo bottom-anchored via margin: auto auto 6px', logoRule.includes('margin: auto auto 6px'));
   check('global panel scrollbar gutter under animation comment',
     css.includes('/* Stable sidebar width and animated section expansion. */\n.panel {\n  scrollbar-gutter: stable;\n}'));
-  check('section expansion animation CSS intact',
-    css.includes('transition: grid-template-rows 220ms ease;') &&
-    css.includes('grid-template-rows: auto minmax(0, 0fr);') &&
-    css.includes('opacity 160ms ease 45ms,'));
+  check('section expansion animation keeps titles outside the animated track',
+    css.includes('.panel > .section {\n  display: block;\n}') &&
+    css.includes('.panel > .section > .section-content {') &&
+    css.includes('grid-template-rows: minmax(0, 0fr);') &&
+    css.includes('.section-content > .section-content-inner'));
+  const firstSection = document.querySelector('.panel > .section');
+  const firstSectionTitle = firstSection?.querySelector(':scope > .section-title');
+  const firstSectionContent = firstSection?.querySelector(':scope > .section-content');
+  check('section content uses a dedicated animation wrapper',
+    firstSectionTitle &&
+    firstSectionContent?.querySelector(':scope > .section-content-inner') &&
+    firstSectionTitle.parentElement === firstSection &&
+    firstSectionContent.parentElement === firstSection);
   const logoWrap = document.querySelector('.sidebar-logo');
   const panel = document.getElementById('controlPanel');
   check('logo is the last element in the sidebar panel', panel && panel.lastElementChild === logoWrap);

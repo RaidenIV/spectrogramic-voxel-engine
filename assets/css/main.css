@@ -1374,43 +1374,48 @@ input[type="number"],
 }
 
 .panel > .section {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  transition: grid-template-rows 220ms ease;
+  display: block;
 }
 
 .panel > .section > .section-content {
-  display: block;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
   min-height: 0;
   overflow: hidden;
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
   transition:
+    grid-template-rows 220ms ease,
     opacity 160ms ease 45ms,
-    transform 220ms ease,
     visibility 0s linear 0s;
 }
 
-.panel > .section.collapsed {
-  grid-template-rows: auto minmax(0, 0fr);
+.panel > .section > .section-content > .section-content-inner {
+  min-height: 0;
+  overflow: hidden;
+  transform: translateY(0);
+  transition: transform 220ms ease;
 }
 
 .panel > .section.collapsed > .section-content {
-  display: block;
+  display: grid;
+  grid-template-rows: minmax(0, 0fr);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-4px);
   pointer-events: none;
   transition:
+    grid-template-rows 220ms ease,
     opacity 120ms ease,
-    transform 180ms ease,
     visibility 0s linear 220ms;
 }
 
+.panel > .section.collapsed > .section-content > .section-content-inner {
+  transform: translateY(-4px);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .panel > .section,
-  .panel > .section > .section-content {
+  .panel > .section > .section-content,
+  .panel > .section > .section-content > .section-content-inner {
     transition: none;
   }
 }

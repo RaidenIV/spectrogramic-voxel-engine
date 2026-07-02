@@ -32,6 +32,11 @@ export const fpsCounter = document.getElementById("fpsCounter");
 
 export const audioFileInput = document.getElementById("audioFile");
 
+export const audioFileButton = document.getElementById("audioFileButton");
+
+export const audioFileButtonText =
+  document.getElementById("audioFileButtonText");
+
 export const audioLoadProgressWrap =
   document.getElementById("audioLoadProgressWrap");
 

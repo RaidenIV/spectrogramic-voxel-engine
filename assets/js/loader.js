@@ -1,6 +1,6 @@
 // loader.js — generated module split of the Spectrogramic Voxel Engine (behavior unchanged)
 // Audio file loading and progress UI.
-import { audio, audioLoadProgress, audioLoadProgressText, audioLoadProgressWrap, audioLoadStage, exportVideoButton, fftLoadProgress, fftLoadProgressText, fftLoadProgressWrap, fftLoadStage, hooks, playButton, runtime, state, status, timeline } from "./core.js";
+import { audio, audioFileButton, audioFileButtonText, audioFileInput, audioLoadProgress, audioLoadProgressText, audioLoadProgressWrap, audioLoadStage, exportVideoButton, fftLoadProgress, fftLoadProgressText, fftLoadProgressWrap, fftLoadStage, hooks, playButton, runtime, state, status, timeline } from "./core.js";
 import { clamp, formatTime } from "./utils.js";
 import { rebuildHudFrequencySpectrogram } from "./analysis.js";
 import { clearHistory } from "./renderer.js";
@@ -10,9 +10,16 @@ import { initializeLoopSelection, syncLoopButton } from "./loop.js";
 export function setAudioLoadProgress(percent, stage = "Loading audio…") {
   window.clearTimeout(runtime.audioLoadProgressHideTimer);
   const normalized = clamp(Number(percent) || 0, 0, 100);
+  const rounded = Math.round(normalized);
+
+  audioFileInput.disabled = true;
+  audioFileButton.classList.add("is-loading");
+  audioFileButton.setAttribute("aria-disabled", "true");
+  audioFileButton.title = `${stage} ${rounded}%`;
+  audioFileButtonText.hidden = true;
   audioLoadProgressWrap.hidden = false;
   audioLoadProgress.value = normalized;
-  audioLoadProgressText.textContent = `${Math.round(normalized)}%`;
+  audioLoadProgressText.textContent = `${rounded}%`;
   audioLoadStage.textContent = stage;
 }
 
@@ -23,6 +30,11 @@ export function hideAudioLoadProgress(delay = 0) {
     audioLoadProgress.value = 0;
     audioLoadProgressText.textContent = "0%";
     audioLoadStage.textContent = "Preparing audio…";
+    audioFileButtonText.hidden = false;
+    audioFileButton.classList.remove("is-loading");
+    audioFileButton.setAttribute("aria-disabled", "false");
+    audioFileButton.removeAttribute("title");
+    audioFileInput.disabled = false;
   };
 
   if (delay > 0) {

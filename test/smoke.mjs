@@ -155,6 +155,29 @@ check('uncaught errors surface in status bar',
   (document.getElementById('status')?.textContent || '').includes('smoke-test synthetic failure'));
 
 
+// Audio loading progress stays inside the fixed-height file button and prevents
+// additional file selection until the visible loading state has cleared.
+{
+  const { setAudioLoadProgress, hideAudioLoadProgress } = await import(new URL('assets/js/loader.js', ROOT));
+  const fileInput = document.getElementById('audioFile');
+  const fileButton = document.getElementById('audioFileButton');
+  const fileButtonText = document.getElementById('audioFileButtonText');
+  const progressWrap = document.getElementById('audioLoadProgressWrap');
+  const progress = document.getElementById('audioLoadProgress');
+
+  setAudioLoadProgress(42, 'Reading audio file…');
+  check('audio loading progress replaces the load button text',
+    fileButtonText?.hidden === true && progressWrap?.hidden === false && progress?.value === 42);
+  check('audio load button is unusable while progress is visible',
+    fileInput?.disabled === true && fileButton?.classList.contains('is-loading') &&
+    fileButton?.getAttribute('aria-disabled') === 'true');
+
+  hideAudioLoadProgress();
+  check('audio load button is restored after loading progress clears',
+    fileInput?.disabled === false && fileButtonText?.hidden === false && progressWrap?.hidden === true &&
+    !fileButton?.classList.contains('is-loading'));
+}
+
 // Sidebar logo (SIDEBAR.md section 14): bottom-anchored flex footer, single
 // canonical CSS rule, stable scrollbar gutter, correct SVG attribute casing.
 {
@@ -166,6 +189,9 @@ check('uncaught errors surface in status bar',
   check('logo bottom-anchored via margin: auto auto 6px', logoRule.includes('margin: auto auto 6px'));
   check('global panel scrollbar gutter under animation comment',
     css.includes('/* Stable sidebar width and animated section expansion. */\n.panel {\n  scrollbar-gutter: stable;\n}'));
+  check('embedded audio progress uses a green fill without external spacing',
+    css.includes('.audio-file-load-progress-wrap {\n  width: 100%;\n  margin-top: 0;') &&
+    css.includes('.audio-file-load-progress-wrap .audio-load-progress::-webkit-progress-value {\n  background: #22c55e;'));
   check('section expansion animation keeps titles outside the animated track',
     css.includes('.panel > .section {\n  display: block;\n}') &&
     css.includes('.panel > .section > .section-content {') &&

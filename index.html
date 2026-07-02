@@ -25,13 +25,15 @@
 <div class="section collapsed">
 <div class="section-title">Audio</div>
 <div class="control">
-<label class="file-button" for="audioFile">Load Audio File</label>
-<input accept="audio/*,.wav,.mp3,.m4a,.aac,.ogg,.flac" id="audioFile" type="file"/>
-<div aria-live="polite" class="audio-load-progress-wrap" hidden="" id="audioLoadProgressWrap">
+<label aria-disabled="false" class="file-button audio-file-button" for="audioFile" id="audioFileButton">
+<span id="audioFileButtonText">Load Audio File</span>
+<span aria-live="polite" class="audio-load-progress-wrap audio-file-load-progress-wrap" hidden="" id="audioLoadProgressWrap">
 <progress aria-label="Audio loading progress" class="audio-load-progress" id="audioLoadProgress" max="100" value="0"></progress>
 <span class="audio-load-progress-text" id="audioLoadProgressText">0%</span>
-<span class="audio-load-stage" id="audioLoadStage">Preparing audio…</span>
-</div>
+<span class="audio-load-stage audio-file-load-stage" id="audioLoadStage">Preparing audio…</span>
+</span>
+</label>
+<input accept="audio/*,.wav,.mp3,.m4a,.aac,.ogg,.flac" id="audioFile" type="file"/>
 </div>
 <div class="transport">
 <button class="play-button" disabled="" id="playButton" type="button">Play</button>

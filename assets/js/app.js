@@ -541,17 +541,19 @@ bindNumber(
   "×"
 );
 
-applyCameraPresetButton.addEventListener("click", () => {
-  applyCameraPreset();
-});
+// Optional compatibility bindings keep mixed cached HTML/module versions from
+// aborting startup while the preset dropdowns remain the primary controls.
+applyCameraPresetButton?.addEventListener("click", applyCameraPreset);
 
 cameraPresetInput.addEventListener("change", () => {
   applyCameraPreset();
 });
 
+const performancePresetInput = document.getElementById("performancePreset");
+performancePresetInput?.addEventListener("change", applyPerformancePreset);
 document
   .getElementById("applyPerformancePreset")
-  .addEventListener("click", applyPerformancePreset);
+  ?.addEventListener("click", applyPerformancePreset);
 
 document
   .getElementById("importSettings")

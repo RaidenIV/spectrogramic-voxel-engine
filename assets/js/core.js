@@ -73,6 +73,7 @@ export const loopStatus = document.getElementById("loopStatus");
 
 export const cameraPresetInput = document.getElementById("cameraPreset");
 
+// Kept for compatibility with cached entry modules after the Apply button was removed.
 export const applyCameraPresetButton = document.getElementById("applyCameraPreset");
 
 export const app = document.getElementById("app");

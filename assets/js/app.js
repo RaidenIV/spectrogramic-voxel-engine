@@ -55,6 +55,7 @@ keyboardControlTextResizeObserver.observe(viewportFrameElement);
 function setAdvancedMode(enabled) {
   const isAdvanced = Boolean(enabled);
   controlPanel.classList.toggle("advanced-mode", isAdvanced);
+  app.classList.toggle("advanced-mode", isAdvanced);
   advancedModeInput.checked = isAdvanced;
   advancedModeInput.setAttribute("aria-checked", String(isAdvanced));
 }

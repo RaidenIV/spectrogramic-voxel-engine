@@ -110,12 +110,13 @@ canvas {
 }
 
 .control-help-row {
-  top: calc(100% - 16px);
+  top: calc(100% - 11px);
   right: 18px;
   bottom: auto;
   left: 18px;
   display: flex;
-  align-items: baseline;
+  transform: translateY(-50%);
+  align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.42);
   font-size: 11px;
@@ -705,7 +706,7 @@ input:focus-visible,
 }
 
 .app.sidebar-collapsed {
-  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-columns: 60px minmax(0, 1fr);
 }
 
 .panel {
@@ -941,6 +942,12 @@ input:focus-visible,
   display: none !important;
 }
 
+/* Advanced mode hides the viewport keyboard control text and logo overlays. */
+.app.advanced-mode .control-help-row,
+.app.advanced-mode .viewport-logo {
+  display: none !important;
+}
+
 .panel input[type="color"] {
   width: 42px;
   height: 34px;
@@ -1081,7 +1088,7 @@ input:focus-visible,
 .app.sidebar-collapsed .sidebar-toggle {
   top: 6px;
   right: auto;
-  left: 6px;
+  left: 12px;
 }
 
 .sidebar-toggle-icon {

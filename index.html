@@ -5,6 +5,15 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>SPECTROGRAMIC VOXEL ENGINE</title>
+<style id="startup-visibility-style">
+  html, body {
+    background: #050507;
+  }
+
+  body.app-loading #app {
+    visibility: hidden;
+  }
+</style>
 <link href="assets/css/main.css" rel="stylesheet"/>
 <link href="assets/css/loop-editor.css" rel="stylesheet"/>
 <script type="importmap">
@@ -16,7 +25,7 @@
     }
   </script>
 </head>
-<body>
+<body class="app-loading">
 
 
 <main class="app" id="app"><aside aria-label="SPECTROGRAMIC VOXEL ENGINE controls" class="panel" id="controlPanel"><button aria-controls="controlPanel" aria-expanded="true" aria-label="Collapse sidebar" class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar" type="button"><span aria-hidden="true" class="sidebar-toggle-icon" id="sidebarToggleIcon">‹</span></button>
@@ -759,7 +768,7 @@ if (location.protocol === "file:") {
       "This modular build cannot run from file:// — open a terminal in this folder, run \"python -m http.server 8000\", then open http://localhost:8000";
   }
 }
-</script><script src="assets/js/app.js?v=20260703-1" type="module"></script>
+</script><script src="assets/js/app.js?v=20260703-2" type="module"></script>
 </body>
 </html>
 

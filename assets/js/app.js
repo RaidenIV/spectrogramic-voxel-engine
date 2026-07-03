@@ -865,3 +865,12 @@ function animate(now) {
 }
 
 requestAnimationFrame(animate);
+
+// Keep the uninitialized interface hidden until the first rendered frame has
+// completed. This prevents the sidebar, logo, and viewport from flashing in
+// their raw HTML state while modules and WebGL initialize.
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    document.body.classList.remove("app-loading");
+  });
+});

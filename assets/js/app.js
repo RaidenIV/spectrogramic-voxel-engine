@@ -17,6 +17,41 @@ import { exportPng, exportSettings, exportVideo, requestVideoExportCancel, setVi
 const advancedModeInput = document.getElementById("advancedMode");
 const controlPanel = document.getElementById("controlPanel");
 
+const keyboardControlTextDisplay = document.getElementById("keyboardControlTextDisplay");
+const keyboardControlHelpRow = keyboardControlTextDisplay?.closest(".control-help-row");
+const viewportFrameElement = document.getElementById("viewportFrame");
+
+function centerKeyboardControlTextInBottomGap() {
+  if (!keyboardControlHelpRow || !viewportFrameElement) {
+    return;
+  }
+
+  const viewportRect = viewport.getBoundingClientRect();
+  const frameRect = viewportFrameElement.getBoundingClientRect();
+
+  if (viewportRect.height <= 0) {
+    return;
+  }
+
+  const visualizationBottom = Math.min(
+    viewportRect.bottom,
+    Math.max(viewportRect.top, frameRect.bottom)
+  );
+  const gapCenter =
+    visualizationBottom + (viewportRect.bottom - visualizationBottom) / 2;
+
+  keyboardControlHelpRow.style.top =
+    `${gapCenter - viewportRect.top}px`;
+  keyboardControlHelpRow.style.bottom = "auto";
+}
+
+const keyboardControlTextResizeObserver = new ResizeObserver(() => {
+  centerKeyboardControlTextInBottomGap();
+});
+
+keyboardControlTextResizeObserver.observe(viewport);
+keyboardControlTextResizeObserver.observe(viewportFrameElement);
+
 function setAdvancedMode(enabled) {
   const isAdvanced = Boolean(enabled);
   controlPanel.classList.toggle("advanced-mode", isAdvanced);
@@ -242,64 +277,6 @@ bindCheckbox(
   "keyboardControlTextVisible",
   "keyboardControlTextVisible",
   updateKeyboardControlText
-);
-
-bindNumber(
-  "keyboardControlTextFontSize",
-  "keyboardControlTextFontSizeValue",
-  "keyboardControlTextFontSize",
-  0,
-  updateKeyboardControlText,
-  "px"
-);
-
-bindNumber(
-  "keyboardControlTextX",
-  "keyboardControlTextXValue",
-  "keyboardControlTextX",
-  1,
-  updateKeyboardControlText,
-  "%"
-);
-
-bindNumber(
-  "keyboardControlTextY",
-  "keyboardControlTextYValue",
-  "keyboardControlTextY",
-  1,
-  updateKeyboardControlText,
-  "%"
-);
-
-bindCheckbox("logoVisible", "logoVisible", () => {
-  updateViewportLogoLayout();
-});
-
-bindNumber(
-  "logoX",
-  "logoXValue",
-  "logoX",
-  1,
-  updateViewportLogoLayout,
-  "%"
-);
-
-bindNumber(
-  "logoY",
-  "logoYValue",
-  "logoY",
-  1,
-  updateViewportLogoLayout,
-  "%"
-);
-
-bindNumber(
-  "logoSize",
-  "logoSizeValue",
-  "logoSize",
-  1,
-  updateViewportLogoLayout,
-  "%"
 );
 
 document.getElementById("fftSize").addEventListener("change", async (event) => {
@@ -811,6 +788,8 @@ syncLoopButton();
 refreshSavedPresetList();
 
 fitViewport();
+
+centerKeyboardControlTextInBottomGap();
 
 rebuildWaveform();
 

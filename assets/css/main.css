@@ -110,8 +110,9 @@ canvas {
 }
 
 .control-help-row {
+  top: calc(100% - 16px);
   right: 18px;
-  bottom: 16px;
+  bottom: auto;
   left: 18px;
   display: flex;
   align-items: baseline;
@@ -125,6 +126,7 @@ canvas {
 
 .keyboard-control-text {
   position: relative;
+  top: 0 !important;
   color: inherit;
   font-size: 11px;
   line-height: 1.2;
@@ -1078,7 +1080,8 @@ input:focus-visible,
 
 .app.sidebar-collapsed .sidebar-toggle {
   top: 6px;
-  right: 6px;
+  right: auto;
+  left: 6px;
 }
 
 .sidebar-toggle-icon {

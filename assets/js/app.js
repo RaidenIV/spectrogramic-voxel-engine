@@ -10,7 +10,7 @@ import { applyCameraPreset, fitViewport, getViewportResolutionDimensions, markCa
 import { commitTimelineSeek, syncPlaybackTimeline, synchronizeCascadeToAudioTime, togglePlayback, updateOutputAudioLevel } from "./playback.js";
 import { enforceSelectedLoop, loopModalController, syncLoopButton } from "./loop.js";
 import { hideFftLoadProgress, loadAudioFile, setFftLoadProgress } from "./loader.js";
-import { initializeSectionResetButtons } from "./reset.js";
+import { initializeSectionResetButtons } from "./reset.js?v=20260703-1";
 import { applyPerformancePreset, applySettings, bindCheckbox, bindColor, bindNumber, deleteLocalPreset, initializeCollapsibleSections, lightingBindings, loadLocalPreset, materialBindings, matrixBindings, rebuildBindings, refreshSavedPresetList, saveLocalPreset, syncControlsFromState, updateMaterialControlVisibility } from "./controls.js";
 import { exportPng, exportSettings, exportVideo, requestVideoExportCancel, setVideoExportStatus, updateVideoExportFormatUi } from "./export.js";
 

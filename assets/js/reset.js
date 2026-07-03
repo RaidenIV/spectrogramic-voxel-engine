@@ -144,6 +144,10 @@ export function initializeSectionResetButtons() {
     }
 
     const sectionName = title.textContent.trim();
+    if (["Audio", "DISPLAY", "Performance"].includes(sectionName)) {
+      return;
+    }
+
     const button = document.createElement("button");
     button.type = "button";
     button.className = "section-reset-button";

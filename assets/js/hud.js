@@ -22,7 +22,7 @@ export function updateKeyboardControlText() {
   const viewportElement = document.getElementById("viewport");
   const viewportWidth = viewportElement?.clientWidth || window.innerWidth || 0;
   const viewportHeight = viewportElement?.clientHeight || window.innerHeight || 0;
-  const xOffset = ((state.keyboardControlTextX - 75) / 100) * viewportWidth;
+  const xOffset = ((state.keyboardControlTextX - 50) / 100) * viewportWidth;
   const yOffset = ((state.keyboardControlTextY - 96) / 100) * viewportHeight;
 
   controlText.style.left = `${xOffset}px`;

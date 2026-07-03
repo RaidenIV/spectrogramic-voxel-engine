@@ -20,7 +20,7 @@
 
 
 <main class="app" id="app"><aside aria-label="SPECTROGRAMIC VOXEL ENGINE controls" class="panel" id="controlPanel"><button aria-controls="controlPanel" aria-expanded="true" aria-label="Collapse sidebar" class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar" type="button"><span aria-hidden="true" class="sidebar-toggle-icon" id="sidebarToggleIcon">‹</span></button>
-<header class="brand"><h1>SPECTROGRAMIC VOXEL ENGINE</h1><p>A time-domain amplitude envelope is mirrored beneath itself while older rows cascade into depth.</p></header>
+<header class="brand"><h1>SPECTROGRAMIC VOXEL ENGINE</h1></header>
 
 <div class="section collapsed">
 <div class="section-title">Audio</div>
@@ -46,9 +46,7 @@
 </div>
 <div class="control">
 <button aria-pressed="false" disabled="" id="loopButton" type="button">Loop</button>
-<div class="loop-status" data-tone="idle" id="loopStatus">
-          Load and analyze audio to create a loop.
-        </div>
+<div class="loop-status" data-tone="idle" hidden="" id="loopStatus"></div>
 </div>
 <div class="control">
 <div class="control-header">
@@ -112,9 +110,9 @@
 <div class="control">
 <div class="control-header">
 <label for="spatialSmoothing">Spatial Smoothing</label>
-<span class="range-value-editor"><input aria-label="Spatial Smoothing Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="spatialSmoothing" id="spatialSmoothingValue" max="10" min="0" step="1" type="number" value="2"/></span>
+<span class="range-value-editor"><input aria-label="Spatial Smoothing Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="spatialSmoothing" id="spatialSmoothingValue" max="10" min="0" step="1" type="number" value="9"/></span>
 </div>
-<input id="spatialSmoothing" max="10" min="0" step="1" type="range" value="2"/>
+<input id="spatialSmoothing" max="10" min="0" step="1" type="range" value="9"/>
 </div>
 <div class="control">
 <div class="control-header">
@@ -126,9 +124,9 @@
 <div class="control">
 <div class="control-header">
 <label for="cascadeRate">Cascade Rate</label>
-<span class="range-value-editor"><input aria-label="Cascade Rate Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="cascadeRate" id="cascadeRateValue" max="60" min="5" step="1" type="number" value="24"/><span aria-hidden="true" class="range-value-suffix">fps</span></span>
+<span class="range-value-editor"><input aria-label="Cascade Rate Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="cascadeRate" id="cascadeRateValue" max="60" min="5" step="1" type="number" value="30"/><span aria-hidden="true" class="range-value-suffix">fps</span></span>
 </div>
-<input id="cascadeRate" max="60" min="5" step="1" type="range" value="24"/>
+<input id="cascadeRate" max="60" min="5" step="1" type="range" value="30"/>
 </div>
 </div>
 <div class="section collapsed">
@@ -145,7 +143,7 @@
 <div class="control toggle-row orientation-toggle-row">
 <label for="orientation" id="orientationLabel">Landscape</label>
 <label class="toggle-switch">
-<input aria-label="Landscape orientation" checked="" class="toggle-switch-input" id="orientation" role="switch" type="checkbox"/>
+<input aria-label="Landscape orientation" checked="" class="toggle-switch-input" id="orientation" role="switch" type="checkbox" value="landscape"/>
 <span aria-hidden="true" class="toggle-switch-track"></span>
 </label>
 </div>
@@ -166,33 +164,33 @@
 <div class="control toggle-row">
 <label for="hudVisible">Show HUD</label>
 <label aria-label="Show HUD" class="toggle-switch">
-<input checked="" class="toggle-switch-input" id="hudVisible" role="switch" type="checkbox"/>
+<input class="toggle-switch-input" id="hudVisible" role="switch" type="checkbox" checked=""/>
 <span aria-hidden="true" class="toggle-switch-track"></span>
 </label>
 </div>
 <div class="control toggle-row">
 <label for="keyboardControlTextVisible">Show Keyboard Control Text</label>
 <label aria-label="Show keyboard control text" class="toggle-switch">
-<input checked="" class="toggle-switch-input" id="keyboardControlTextVisible" role="switch" type="checkbox"/>
+<input class="toggle-switch-input" id="keyboardControlTextVisible" role="switch" type="checkbox" checked=""/>
 <span aria-hidden="true" class="toggle-switch-track"></span>
 </label>
 </div>
 <div class="control">
-<div class="control-header"><label for="keyboardControlTextFontSize">Keyboard Text Size</label><span class="range-value-editor"><input aria-label="Keyboard Text Size Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="keyboardControlTextFontSize" id="keyboardControlTextFontSizeValue" max="32" min="6" step="1" type="number" value="11"/><span aria-hidden="true" class="range-value-suffix">px</span></span></div>
-<input id="keyboardControlTextFontSize" max="32" min="6" step="1" type="range" value="11"/>
+<div class="control-header"><label for="keyboardControlTextFontSize">Keyboard Text Size</label><span class="range-value-editor"><input aria-label="Keyboard Text Size Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="keyboardControlTextFontSize" id="keyboardControlTextFontSizeValue" max="32" min="6" step="1" type="number" value="13"/><span aria-hidden="true" class="range-value-suffix">px</span></span></div>
+<input id="keyboardControlTextFontSize" max="32" min="6" step="1" type="range" value="13"/>
 </div>
 <div class="control">
-<div class="control-header"><label for="keyboardControlTextX">Keyboard Text X</label><span class="range-value-editor"><input aria-label="Keyboard Text X Value" class="range-value-input" data-decimals="1" data-display-multiplier="1" data-range-id="keyboardControlTextX" id="keyboardControlTextXValue" max="100" min="0" step="0.5" type="number" value="75.0"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
-<input id="keyboardControlTextX" max="100" min="0" step="0.5" type="range" value="75"/>
+<div class="control-header"><label for="keyboardControlTextX">Keyboard Text X</label><span class="range-value-editor"><input aria-label="Keyboard Text X Value" class="range-value-input" data-decimals="1" data-display-multiplier="1" data-range-id="keyboardControlTextX" id="keyboardControlTextXValue" max="100" min="0" step="0.5" type="number" value="50.0"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
+<input id="keyboardControlTextX" max="100" min="0" step="0.5" type="range" value="50"/>
 </div>
 <div class="control">
-<div class="control-header"><label for="keyboardControlTextY">Keyboard Text Y</label><span class="range-value-editor"><input aria-label="Keyboard Text Y Value" class="range-value-input" data-decimals="1" data-display-multiplier="1" data-range-id="keyboardControlTextY" id="keyboardControlTextYValue" max="100" min="0" step="0.5" type="number" value="96.0"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
-<input id="keyboardControlTextY" max="100" min="0" step="0.5" type="range" value="96"/>
+<div class="control-header"><label for="keyboardControlTextY">Keyboard Text Y</label><span class="range-value-editor"><input aria-label="Keyboard Text Y Value" class="range-value-input" data-decimals="1" data-display-multiplier="1" data-range-id="keyboardControlTextY" id="keyboardControlTextYValue" max="100" min="0" step="0.5" type="number" value="96.5"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
+<input id="keyboardControlTextY" max="100" min="0" step="0.5" type="range" value="96.5"/>
 </div>
 <div class="control toggle-row">
 <label for="logoVisible">Show Viewport Logo</label>
 <label aria-label="Show viewport logo" class="toggle-switch">
-<input checked="" class="toggle-switch-input" id="logoVisible" role="switch" type="checkbox"/>
+<input class="toggle-switch-input" id="logoVisible" role="switch" type="checkbox" checked=""/>
 <span aria-hidden="true" class="toggle-switch-track"></span>
 </label>
 </div>
@@ -269,30 +267,30 @@
 <div class="control">
 <div class="control-header">
 <label for="historyRows">History Rows</label>
-<span class="range-value-editor"><input aria-label="History Rows Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="historyRows" id="historyRowsValue" max="160" min="8" step="1" type="number" value="72"/></span>
+<span class="range-value-editor"><input aria-label="History Rows Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="historyRows" id="historyRowsValue" max="160" min="8" step="1" type="number" value="100"/></span>
 </div>
-<input id="historyRows" max="160" min="8" step="1" type="range" value="72"/>
+<input id="historyRows" max="160" min="8" step="1" type="range" value="100"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="size">Cube Width</label>
-<span class="range-value-editor"><input aria-label="Cube Width Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="size" id="sizeValue" max="2" min="0.1" step="0.05" type="number" value="0.85"/></span>
+<span class="range-value-editor"><input aria-label="Cube Width Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="size" id="sizeValue" max="2" min="0.1" step="0.05" type="number" value="1.00"/></span>
 </div>
-<input id="size" max="2" min="0.1" step="0.05" type="range" value="0.85"/>
+<input id="size" max="2" min="0.1" step="0.05" type="range" value="1"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="cubeDepth">Cube Depth</label>
-<span class="range-value-editor"><input aria-label="Cube Depth Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="cubeDepth" id="cubeDepthValue" max="2" min="0.05" step="0.05" type="number" value="0.70"/></span>
+<span class="range-value-editor"><input aria-label="Cube Depth Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="cubeDepth" id="cubeDepthValue" max="2" min="0.05" step="0.05" type="number" value="1.00"/></span>
 </div>
-<input id="cubeDepth" max="2" min="0.05" step="0.05" type="range" value="0.7"/>
+<input id="cubeDepth" max="2" min="0.05" step="0.05" type="range" value="1"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="gap">Horizontal Gap</label>
-<span class="range-value-editor"><input aria-label="Horizontal Gap Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="gap" id="gapValue" max="1" min="0" step="0.01" type="number" value="0.06"/></span>
+<span class="range-value-editor"><input aria-label="Horizontal Gap Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="gap" id="gapValue" max="1" min="0" step="0.01" type="number" value="0.00"/></span>
 </div>
-<input id="gap" max="1" min="0" step="0.01" type="range" value="0.06"/>
+<input id="gap" max="1" min="0" step="0.01" type="range" value="0"/>
 </div>
 <div class="control">
 <div class="control-header">
@@ -321,30 +319,30 @@
 <div class="control">
 <div class="control-header">
 <label for="fadeStart">Fade Start</label>
-<span class="range-value-editor"><input aria-label="Fade Start Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="fadeStart" id="fadeStartValue" max="0.95" min="0" step="0.01" type="number" value="0.28"/></span>
+<span class="range-value-editor"><input aria-label="Fade Start Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="fadeStart" id="fadeStartValue" max="0.95" min="0" step="0.01" type="number" value="0.95"/></span>
 </div>
-<input id="fadeStart" max="0.95" min="0" step="0.01" type="range" value="0.28"/>
+<input id="fadeStart" max="0.95" min="0" step="0.01" type="range" value="0.95"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="fadeCurve">Fade Curve</label>
-<span class="range-value-editor"><input aria-label="Fade Curve Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="fadeCurve" id="fadeCurveValue" max="5" min="0.2" step="0.05" type="number" value="1.80"/></span>
+<span class="range-value-editor"><input aria-label="Fade Curve Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="fadeCurve" id="fadeCurveValue" max="5" min="0.2" step="0.05" type="number" value="0.20"/></span>
 </div>
-<input id="fadeCurve" max="5" min="0.2" step="0.05" type="range" value="1.8"/>
+<input id="fadeCurve" max="5" min="0.2" step="0.05" type="range" value="0.2"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="minimumBrightness">End Brightness</label>
-<span class="range-value-editor"><input aria-label="End Brightness Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="minimumBrightness" id="minimumBrightnessValue" max="1" min="0" step="0.01" type="number" value="0.05"/></span>
+<span class="range-value-editor"><input aria-label="End Brightness Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="minimumBrightness" id="minimumBrightnessValue" max="1" min="0" step="0.01" type="number" value="1.00"/></span>
 </div>
-<input id="minimumBrightness" max="1" min="0" step="0.01" type="range" value="0.05"/>
+<input id="minimumBrightness" max="1" min="0" step="0.01" type="range" value="1"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="scaleFade">End Scale Reduction</label>
-<span class="range-value-editor"><input aria-label="End Scale Reduction Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="scaleFade" id="scaleFadeValue" max="0.95" min="0" step="0.01" type="number" value="0.20"/></span>
+<span class="range-value-editor"><input aria-label="End Scale Reduction Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="scaleFade" id="scaleFadeValue" max="0.95" min="0" step="0.01" type="number" value="0.00"/></span>
 </div>
-<input id="scaleFade" max="0.95" min="0" step="0.01" type="range" value="0.2"/>
+<input id="scaleFade" max="0.95" min="0" step="0.01" type="range" value="0"/>
 </div>
 </div>
 <div class="section collapsed">
@@ -359,7 +357,7 @@
 <div class="control toggle-row">
 <label for="amplitudeColor">Amplitude-Based Color</label>
 <label aria-label="Amplitude-based color" class="toggle-switch">
-<input class="toggle-switch-input" id="amplitudeColor" role="switch" type="checkbox"/>
+<input class="toggle-switch-input" id="amplitudeColor" role="switch" type="checkbox" checked=""/>
 <span aria-hidden="true" class="toggle-switch-track"></span>
 </label>
 </div>
@@ -374,7 +372,7 @@
 <option value="custom">Custom</option>
 <option value="gist_heat">Gist Heat</option>
 <option value="gnuplot2">Gnuplot2</option>
-<option value="grayscale">Grayscale</option>
+<option selected="" value="grayscale">Grayscale</option>
 <option value="hot">Hot</option>
 <option value="inferno">Inferno</option>
 <option value="jet">Jet</option>
@@ -390,7 +388,7 @@
 <div class="control">
 <div class="control-header">
 <label for="colormapSensitivity">Colormap Sensitivity</label>
-<span class="range-value-editor"><input aria-label="Colormap Sensitivity Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="colormapSensitivity" id="colormapSensitivityValue" max="4" min="0.1" step="0.05" type="number" value="1.00"/></span>
+<span class="range-value-editor"><input aria-label="Colormap Sensitivity Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="colormapSensitivity" id="colormapSensitivityValue" max="4" min="0.1" step="0.05" type="number" value="1.15"/></span>
 </div>
 <input id="colormapSensitivity" max="4" min="0.1" step="0.05" type="range" value="1.15"/>
 </div>
@@ -403,7 +401,7 @@
 </div>
 <div class="control color-row">
 <label for="cubeColor">Waveform Color</label>
-<input id="cubeColor" type="color" value="#383838"/>
+<input id="cubeColor" type="color" value="#000000"/>
 </div>
 <div class="control color-row">
 <label for="peakColor">Peak Color</label>
@@ -424,38 +422,38 @@
 <option value="standard">Standard PBR</option>
 <option value="physical">Physical Clearcoat</option>
 <option value="phong">Phong Glossy</option>
-<option value="lambert">Lambert Matte</option>
+<option selected="" value="lambert">Lambert Matte</option>
 <option value="toon">Toon</option>
-<option selected="" value="basic">Basic Unlit</option>
+<option value="basic">Basic Unlit</option>
 </select>
 </div>
 <div class="control material-control" data-materials="standard physical">
 <div class="control-header">
 <label for="roughness">Roughness</label>
-<span class="range-value-editor"><input aria-label="Roughness Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="roughness" id="roughnessValue" max="1" min="0" step="0.01" type="number" value="0.72"/></span>
+<span class="range-value-editor"><input aria-label="Roughness Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="roughness" id="roughnessValue" max="1" min="0" step="0.01" type="number" value="0.00"/></span>
 </div>
-<input id="roughness" max="1" min="0" step="0.01" type="range" value="0.72"/>
+<input id="roughness" max="1" min="0" step="0.01" type="range" value="0"/>
 </div>
 <div class="control material-control" data-materials="standard physical">
 <div class="control-header">
 <label for="metalness">Metalness</label>
-<span class="range-value-editor"><input aria-label="Metalness Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="metalness" id="metalnessValue" max="1" min="0" step="0.01" type="number" value="0.05"/></span>
+<span class="range-value-editor"><input aria-label="Metalness Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="metalness" id="metalnessValue" max="1" min="0" step="0.01" type="number" value="0.07"/></span>
 </div>
-<input id="metalness" max="1" min="0" step="0.01" type="range" value="0.05"/>
+<input id="metalness" max="1" min="0" step="0.01" type="range" value="0.07"/>
 </div>
 <div class="control material-control" data-materials="physical" hidden="">
 <div class="control-header">
 <label for="clearcoat">Clearcoat</label>
-<span class="range-value-editor"><input aria-label="Clearcoat Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="clearcoat" id="clearcoatValue" max="1" min="0" step="0.01" type="number" value="0.40"/></span>
+<span class="range-value-editor"><input aria-label="Clearcoat Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="clearcoat" id="clearcoatValue" max="1" min="0" step="0.01" type="number" value="0.92"/></span>
 </div>
-<input id="clearcoat" max="1" min="0" step="0.01" type="range" value="0.4"/>
+<input id="clearcoat" max="1" min="0" step="0.01" type="range" value="0.92"/>
 </div>
 <div class="control material-control" data-materials="physical" hidden="">
 <div class="control-header">
 <label for="clearcoatRoughness">Clearcoat Roughness</label>
-<span class="range-value-editor"><input aria-label="Clearcoat Roughness Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="clearcoatRoughness" id="clearcoatRoughnessValue" max="1" min="0" step="0.01" type="number" value="0.20"/></span>
+<span class="range-value-editor"><input aria-label="Clearcoat Roughness Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="clearcoatRoughness" id="clearcoatRoughnessValue" max="1" min="0" step="0.01" type="number" value="1.00"/></span>
 </div>
-<input id="clearcoatRoughness" max="1" min="0" step="0.01" type="range" value="0.2"/>
+<input id="clearcoatRoughness" max="1" min="0" step="0.01" type="range" value="1"/>
 </div>
 <div class="control material-control" data-materials="phong" hidden="">
 <div class="control-header">
@@ -470,49 +468,49 @@
 <div class="control">
 <div class="control-header">
 <label for="ambientIntensity">Ambient Intensity</label>
-<span class="range-value-editor"><input aria-label="Ambient Intensity Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="ambientIntensity" id="ambientIntensityValue" max="4" min="0" step="0.05" type="number" value="1.20"/></span>
+<span class="range-value-editor"><input aria-label="Ambient Intensity Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="ambientIntensity" id="ambientIntensityValue" max="4" min="0" step="0.05" type="number" value="3.90"/></span>
 </div>
-<input id="ambientIntensity" max="4" min="0" step="0.05" type="range" value="0"/>
+<input id="ambientIntensity" max="4" min="0" step="0.05" type="range" value="3.9"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="keyIntensity">Key Light Intensity</label>
-<span class="range-value-editor"><input aria-label="Key Light Intensity Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="keyIntensity" id="keyIntensityValue" max="10" min="0" step="0.1" type="number" value="4.00"/></span>
+<span class="range-value-editor"><input aria-label="Key Light Intensity Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="keyIntensity" id="keyIntensityValue" max="10" min="0" step="0.1" type="number" value="5.00"/></span>
 </div>
-<input id="keyIntensity" max="10" min="0" step="0.1" type="range" value="4"/>
+<input id="keyIntensity" max="10" min="0" step="0.1" type="range" value="5"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="fillIntensity">Fill Light Intensity</label>
-<span class="range-value-editor"><input aria-label="Fill Light Intensity Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="fillIntensity" id="fillIntensityValue" max="6" min="0" step="0.1" type="number" value="1.50"/></span>
+<span class="range-value-editor"><input aria-label="Fill Light Intensity Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="fillIntensity" id="fillIntensityValue" max="6" min="0" step="0.1" type="number" value="0.80"/></span>
 </div>
-<input id="fillIntensity" max="6" min="0" step="0.1" type="range" value="1.5"/>
+<input id="fillIntensity" max="6" min="0" step="0.1" type="range" value="0.8"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="lightAzimuth">Key Light Azimuth</label>
-<span class="range-value-editor"><input aria-label="Key Light Azimuth Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="lightAzimuth" id="lightAzimuthValue" max="180" min="-180" step="1" type="number" value="35"/><span aria-hidden="true" class="range-value-suffix">°</span></span>
+<span class="range-value-editor"><input aria-label="Key Light Azimuth Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="lightAzimuth" id="lightAzimuthValue" max="180" min="-180" step="1" type="number" value="0"/><span aria-hidden="true" class="range-value-suffix">°</span></span>
 </div>
-<input id="lightAzimuth" max="180" min="-180" step="1" type="range" value="180"/>
+<input id="lightAzimuth" max="180" min="-180" step="1" type="range" value="0"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="lightElevation">Key Light Elevation</label>
-<span class="range-value-editor"><input aria-label="Key Light Elevation Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="lightElevation" id="lightElevationValue" max="89" min="5" step="1" type="number" value="55"/><span aria-hidden="true" class="range-value-suffix">°</span></span>
+<span class="range-value-editor"><input aria-label="Key Light Elevation Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="lightElevation" id="lightElevationValue" max="89" min="5" step="1" type="number" value="60"/><span aria-hidden="true" class="range-value-suffix">°</span></span>
 </div>
-<input id="lightElevation" max="89" min="5" step="1" type="range" value="5"/>
+<input id="lightElevation" max="89" min="5" step="1" type="range" value="60"/>
 </div>
 <div class="control">
 <div class="control-header">
 <label for="exposure">Exposure</label>
-<span class="range-value-editor"><input aria-label="Exposure Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="exposure" id="exposureValue" max="3" min="0.1" step="0.05" type="number" value="1.10"/></span>
+<span class="range-value-editor"><input aria-label="Exposure Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="exposure" id="exposureValue" max="3" min="0.1" step="0.05" type="number" value="0.25"/></span>
 </div>
-<input id="exposure" max="3" min="0.1" step="0.05" type="range" value="0.1"/>
+<input id="exposure" max="3" min="0.1" step="0.05" type="range" value="0.25"/>
 </div>
 <div class="control toggle-row">
 <label for="shadows">Cube Shadows</label>
 <label aria-label="Cube shadows" class="toggle-switch">
-<input class="toggle-switch-input" id="shadows" role="switch" type="checkbox"/>
+<input class="toggle-switch-input" id="shadows" role="switch" type="checkbox" checked=""/>
 <span aria-hidden="true" class="toggle-switch-track"></span>
 </label>
 </div>
@@ -554,9 +552,9 @@
 <div class="control" style="margin-top: 14px;">
 <div class="control-header">
 <label for="pixelRatio">Pixel Ratio Limit</label>
-<span class="range-value-editor"><input aria-label="Pixel Ratio Limit Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="pixelRatio" id="pixelRatioValue" max="2" min="0.5" step="0.1" type="number" value="1.50"/></span>
+<span class="range-value-editor"><input aria-label="Pixel Ratio Limit Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="pixelRatio" id="pixelRatioValue" max="2" min="0.5" step="0.1" type="number" value="2.00"/></span>
 </div>
-<input id="pixelRatio" max="2" min="0.5" step="0.1" type="range" value="1.5"/>
+<input id="pixelRatio" max="2" min="0.5" step="0.1" type="range" value="2"/>
 </div>
 </div>
 <div class="section collapsed">
@@ -597,7 +595,7 @@
 <div class="control">
 <div class="control-header">
 <label for="cameraZoom">Camera Zoom</label>
-<span class="range-value-editor"><input aria-label="Camera Zoom Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="cameraZoom" id="cameraZoomValue" max="3" min="0.25" step="0.05" type="number" value="1.00"/><span aria-hidden="true" class="range-value-suffix">×</span></span>
+<span class="range-value-editor"><input aria-label="Camera Zoom Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="cameraZoom" id="cameraZoomValue" max="3" min="0.25" step="0.05" type="number" value="1.50"/><span aria-hidden="true" class="range-value-suffix">×</span></span>
 </div>
 <input id="cameraZoom" max="3" min="0.25" step="0.05" type="range" value="1.5"/>
 </div>
@@ -644,7 +642,7 @@
       </div>
 </div>
 <div class="section">
-<div class="section-title">Export</div>
+<div class="section-title export-section-title">Export</div>
 <div class="control">
 <div class="control-header">
 <label for="viewportResolution">Export Resolution</label>

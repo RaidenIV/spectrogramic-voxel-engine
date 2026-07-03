@@ -783,6 +783,10 @@ input:focus-visible,
   text-transform: uppercase;
 }
 
+.panel .section-title.export-section-title {
+  color: #ff0000;
+}
+
 .panel .section-title::after {
   display: inline-grid;
   flex: 0 0 24px;

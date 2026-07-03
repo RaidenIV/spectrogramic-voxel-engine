@@ -531,7 +531,7 @@ button.loop-active:hover:not(:disabled) {
    Never position it fixed/absolute. */
 .sidebar-logo {
   flex: 0 0 auto;
-  width: min(93.75px, 32.5%);
+  width: min(140.625px, 48.75%);
   margin: auto auto 6px;
   padding-top: 24px;
   color: #ffffff;

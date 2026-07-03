@@ -147,6 +147,9 @@ export function initializeSectionResetButtons() {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "section-reset-button";
+    if (sectionName === "HUD" || sectionName === "PRESETS" || sectionName === "Export") {
+      button.classList.add("advanced-only");
+    }
     button.textContent = "Reset Settings";
     button.setAttribute("aria-label", `Reset ${sectionName} settings`);
     button.title = `Reset ${sectionName} settings`;

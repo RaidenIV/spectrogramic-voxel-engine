@@ -14,7 +14,7 @@
     visibility: hidden;
   }
 </style>
-<link href="assets/css/main.css" rel="stylesheet"/>
+<link href="assets/css/main.css?v=20260703-3" rel="stylesheet"/>
 <link href="assets/css/loop-editor.css" rel="stylesheet"/>
 <script type="importmap">
     {
@@ -30,6 +30,14 @@
 
 <main class="app" id="app"><aside aria-label="SPECTROGRAMIC VOXEL ENGINE controls" class="panel" id="controlPanel"><button aria-controls="controlPanel" aria-expanded="true" aria-label="Collapse sidebar" class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar" type="button"><span aria-hidden="true" class="sidebar-toggle-icon" id="sidebarToggleIcon">‹</span></button>
 <header class="brand"><h1>SPECTROGRAMIC VOXEL ENGINE</h1></header>
+
+<div class="control toggle-row advanced-mode-toggle">
+<label for="advancedMode">Advanced Mode</label>
+<label aria-label="Advanced mode" class="toggle-switch">
+<input class="toggle-switch-input" id="advancedMode" role="switch" type="checkbox"/>
+<span aria-hidden="true" class="toggle-switch-track"></span>
+</label>
+</div>
 
 <div class="section collapsed">
 <div class="section-title">Audio</div>
@@ -57,7 +65,7 @@
 <button aria-pressed="false" disabled="" id="loopButton" type="button">Loop</button>
 <div class="loop-status" data-tone="idle" hidden="" id="loopStatus"></div>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header">
 <label for="playbackRate">Playback Speed</label>
 <span class="range-value-editor"><input aria-label="Playback Speed Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="playbackRate" id="playbackRateValue" max="2" min="0.25" step="0.05" type="number" value="1.00"/><span aria-hidden="true" class="range-value-suffix">×</span></span>
@@ -95,42 +103,42 @@
 <span class="audio-load-stage" id="fftLoadStage">Preparing audio resolution…</span>
 </div>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header">
 <label for="sensitivity" id="gainLabel">Waveform Gain</label>
 <span class="range-value-editor"><input aria-label="Waveform Gain Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="sensitivity" id="sensitivityValue" max="6" min="0.1" step="0.05" type="number" value="1.50"/></span>
 </div>
 <input id="sensitivity" max="6" min="0.1" step="0.05" type="range" value="1.5"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header">
 <label for="attack">Attack</label>
 <span class="range-value-editor"><input aria-label="Attack Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="attack" id="attackValue" max="1" min="0.01" step="0.01" type="number" value="0.72"/></span>
 </div>
 <input id="attack" max="1" min="0.01" step="0.01" type="range" value="0.72"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header">
 <label for="release">Release</label>
 <span class="range-value-editor"><input aria-label="Release Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="release" id="releaseValue" max="1" min="0.01" step="0.01" type="number" value="0.20"/></span>
 </div>
 <input id="release" max="1" min="0.01" step="0.01" type="range" value="0.2"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header">
 <label for="spatialSmoothing">Spatial Smoothing</label>
 <span class="range-value-editor"><input aria-label="Spatial Smoothing Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="spatialSmoothing" id="spatialSmoothingValue" max="10" min="0" step="1" type="number" value="9"/></span>
 </div>
 <input id="spatialSmoothing" max="10" min="0" step="1" type="range" value="9"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header">
 <label for="historyBlend">History Smoothing</label>
 <span class="range-value-editor"><input aria-label="History Smoothing Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="historyBlend" id="historyBlendValue" max="0.9" min="0" step="0.01" type="number" value="0.12"/></span>
 </div>
 <input id="historyBlend" max="0.9" min="0" step="0.01" type="range" value="0.12"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header">
 <label for="cascadeRate">Cascade Rate</label>
 <span class="range-value-editor"><input aria-label="Cascade Rate Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="cascadeRate" id="cascadeRateValue" max="60" min="5" step="1" type="number" value="30"/><span aria-hidden="true" class="range-value-suffix">fps</span></span>
@@ -156,7 +164,7 @@
 <span aria-hidden="true" class="toggle-switch-track"></span>
 </label>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header">
 <label for="viewportSize">Preview Size</label>
 <span class="range-value-editor"><input aria-label="Preview Size Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="viewportSize" id="viewportSizeValue" max="120" min="55" step="5" type="number" value="100"/><span aria-hidden="true" class="range-value-suffix">%</span></span>
@@ -184,39 +192,39 @@
 <span aria-hidden="true" class="toggle-switch-track"></span>
 </label>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="keyboardControlTextFontSize">Keyboard Text Size</label><span class="range-value-editor"><input aria-label="Keyboard Text Size Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="keyboardControlTextFontSize" id="keyboardControlTextFontSizeValue" max="32" min="6" step="1" type="number" value="13"/><span aria-hidden="true" class="range-value-suffix">px</span></span></div>
 <input id="keyboardControlTextFontSize" max="32" min="6" step="1" type="range" value="13"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="keyboardControlTextX">Keyboard Text X</label><span class="range-value-editor"><input aria-label="Keyboard Text X Value" class="range-value-input" data-decimals="1" data-display-multiplier="1" data-range-id="keyboardControlTextX" id="keyboardControlTextXValue" max="100" min="0" step="0.5" type="number" value="50.0"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
 <input id="keyboardControlTextX" max="100" min="0" step="0.5" type="range" value="50"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="keyboardControlTextY">Keyboard Text Y</label><span class="range-value-editor"><input aria-label="Keyboard Text Y Value" class="range-value-input" data-decimals="1" data-display-multiplier="1" data-range-id="keyboardControlTextY" id="keyboardControlTextYValue" max="100" min="0" step="0.5" type="number" value="96.5"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
 <input id="keyboardControlTextY" max="100" min="0" step="0.5" type="range" value="96.5"/>
 </div>
-<div class="control toggle-row">
+<div class="advanced-only control toggle-row">
 <label for="logoVisible">Show Viewport Logo</label>
 <label aria-label="Show viewport logo" class="toggle-switch">
 <input class="toggle-switch-input" id="logoVisible" role="switch" type="checkbox" checked=""/>
 <span aria-hidden="true" class="toggle-switch-track"></span>
 </label>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="logoX">Logo X</label><span class="range-value-editor"><input aria-label="Logo X Value" class="range-value-input" data-decimals="1" data-display-multiplier="1" data-range-id="logoX" id="logoXValue" max="100" min="0" step="0.5" type="number" value="50.0"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
 <input id="logoX" max="100" min="0" step="0.5" type="range" value="50"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="logoY">Logo Y</label><span class="range-value-editor"><input aria-label="Logo Y Value" class="range-value-input" data-decimals="1" data-display-multiplier="1" data-range-id="logoY" id="logoYValue" max="100" min="0" step="0.5" type="number" value="5.0"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
 <input id="logoY" max="100" min="0" step="0.5" type="range" value="5"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="logoSize">Logo Size</label><span class="range-value-editor"><input aria-label="Logo Size Value" class="range-value-input" data-decimals="1" data-display-multiplier="1" data-range-id="logoSize" id="logoSizeValue" max="25" min="3" step="0.5" type="number" value="5.5"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
 <input id="logoSize" max="25" min="3" step="0.5" type="range" value="5.5"/>
 </div>
 
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="frequencyGraphPlacement">Frequency Graph</label></div>
 <select id="frequencyGraphPlacement">
 <option value="top-left">Top Left</option>
@@ -225,7 +233,7 @@
 <option value="bottom-right">Bottom Right</option>
 </select>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="waveformGraphPlacement">Waveform Graph</label></div>
 <select id="waveformGraphPlacement">
 <option value="top-left">Top Left</option>
@@ -234,7 +242,7 @@
 <option value="bottom-right">Bottom Right</option>
 </select>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="levelsGraphPlacement">Levels Graph</label></div>
 <select id="levelsGraphPlacement">
 <option value="top-left">Top Left</option>
@@ -243,28 +251,28 @@
 <option selected="" value="bottom-right">Bottom Right</option>
 </select>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="graphWidth">Graph Width</label><span class="range-value-editor"><input aria-label="Graph Width Value" class="range-value-input" data-decimals="0" data-display-multiplier="1" data-range-id="graphWidth" id="graphWidthValue" max="40" min="8" step="1" type="number" value="10"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
 <input id="graphWidth" max="40" min="8" step="1" type="range" value="10"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="graphHeight">Graph Height</label><span class="range-value-editor"><input aria-label="Graph Height Value" class="range-value-input" data-decimals="1" data-display-multiplier="1" data-range-id="graphHeight" id="graphHeightValue" max="15" min="3" step="0.5" type="number" value="4.5"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
 <input id="graphHeight" max="15" min="3" step="0.5" type="range" value="4.5"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="metadataX">Metadata X</label><span class="range-value-editor"><input aria-label="Metadata X Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="metadataX" id="metadataXValue" max="100" min="0" step="0.25" type="number" value="1.50"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
 <input id="metadataX" max="100" min="0" step="0.25" type="range" value="1.5"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="metadataY">Metadata Y</label><span class="range-value-editor"><input aria-label="Metadata Y Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="metadataY" id="metadataYValue" max="100" min="0" step="0.25" type="number" value="2.50"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
 <input id="metadataY" max="100" min="0" step="0.25" type="range" value="2.5"/>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header"><label for="guiTextSize">HUD Text Size</label><span class="range-value-editor"><input aria-label="HUD Text Size Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="guiTextSize" id="guiTextSizeValue" max="2" min="0.4" step="0.05" type="number" value="0.75"/><span aria-hidden="true" class="range-value-suffix">%</span></span></div>
 <input id="guiTextSize" max="2" min="0.4" step="0.05" type="range" value="0.75"/>
 </div>
 </div>
-<div class="section collapsed">
+<div class="section collapsed advanced-only">
 <div class="section-title">Waveform Geometry</div>
 <div class="control">
 <div class="control-header">
@@ -323,7 +331,7 @@
 <input id="minimumHeight" max="2" min="0.25" step="0.02" type="range" value="0.25"/>
 </div>
 </div>
-<div class="section collapsed">
+<div class="section collapsed advanced-only">
 <div class="section-title">Depth Fade</div>
 <div class="control">
 <div class="control-header">
@@ -394,7 +402,7 @@
 <option value="viridis">Viridis</option>
 </select>
 </div>
-<div class="control">
+<div class="advanced-only control">
 <div class="control-header">
 <label for="colormapSensitivity">Colormap Sensitivity</label>
 <span class="range-value-editor"><input aria-label="Colormap Sensitivity Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="colormapSensitivity" id="colormapSensitivityValue" max="4" min="0.1" step="0.05" type="number" value="1.15"/></span>
@@ -421,7 +429,7 @@
 <input id="backgroundColor" type="color" value="#000000"/>
 </div>
 </div>
-<div class="section collapsed">
+<div class="section collapsed advanced-only">
 <div class="section-title">Material</div>
 <div class="control">
 <div class="control-header">
@@ -472,7 +480,7 @@
 <input id="shininess" max="200" min="0" step="1" type="range" value="60"/>
 </div>
 </div>
-<div class="section collapsed">
+<div class="section collapsed advanced-only">
 <div class="section-title">Lighting</div>
 <div class="control">
 <div class="control-header">
@@ -555,7 +563,7 @@
 <option value="maximum">Maximum</option>
 </select>
 </div>
-<div class="control" style="margin-top: 14px;">
+<div class="advanced-only control" style="margin-top: 14px;">
 <div class="control-header">
 <label for="pixelRatio">Pixel Ratio Limit</label>
 <span class="range-value-editor"><input aria-label="Pixel Ratio Limit Value" class="range-value-input" data-decimals="2" data-display-multiplier="1" data-range-id="pixelRatio" id="pixelRatioValue" max="2" min="0.5" step="0.1" type="number" value="2.00"/></span>
@@ -621,7 +629,7 @@
 </div>
 <div class="section collapsed">
 <div class="section-title">PRESETS</div>
-<div class="control">
+<div class="advanced-only control">
 <label class="file-button" for="importSettings">
           Import Settings JSON
         </label>
@@ -640,7 +648,7 @@
 <button id="loadPreset" type="button">Load</button>
 <button id="deletePreset" type="button">Delete</button>
 </div>
-<button id="exportButton" type="button">Export JSON</button>
+<button class="advanced-only" id="exportButton" type="button">Export JSON</button>
 <div class="hint">
         JSON presets include the visual, material, lighting, performance,
         camera, viewport, and export settings. Audio files are not embedded.
@@ -768,7 +776,7 @@ if (location.protocol === "file:") {
       "This modular build cannot run from file:// — open a terminal in this folder, run \"python -m http.server 8000\", then open http://localhost:8000";
   }
 }
-</script><script src="assets/js/app.js?v=20260703-2" type="module"></script>
+</script><script src="assets/js/app.js?v=20260703-3" type="module"></script>
 </body>
 </html>
 

@@ -14,6 +14,22 @@ import { initializeSectionResetButtons } from "./reset.js";
 import { applyPerformancePreset, applySettings, bindCheckbox, bindColor, bindNumber, deleteLocalPreset, initializeCollapsibleSections, lightingBindings, loadLocalPreset, materialBindings, matrixBindings, rebuildBindings, refreshSavedPresetList, saveLocalPreset, syncControlsFromState, updateMaterialControlVisibility } from "./controls.js";
 import { exportPng, exportSettings, exportVideo, requestVideoExportCancel, setVideoExportStatus, updateVideoExportFormatUi } from "./export.js";
 
+const advancedModeInput = document.getElementById("advancedMode");
+const controlPanel = document.getElementById("controlPanel");
+
+function setAdvancedMode(enabled) {
+  const isAdvanced = Boolean(enabled);
+  controlPanel.classList.toggle("advanced-mode", isAdvanced);
+  advancedModeInput.checked = isAdvanced;
+  advancedModeInput.setAttribute("aria-checked", String(isAdvanced));
+}
+
+advancedModeInput.addEventListener("change", () => {
+  setAdvancedMode(advancedModeInput.checked);
+});
+
+setAdvancedMode(false);
+
 controls.addEventListener("start", () => {
   markCameraPresetCustom();
 });

@@ -934,6 +934,11 @@ input:focus-visible,
   opacity: 0.42;
 }
 
+/* Production mode hides advanced controls without removing their behavior. */
+.panel:not(.advanced-mode) .advanced-only {
+  display: none !important;
+}
+
 .panel input[type="color"] {
   width: 42px;
   height: 34px;

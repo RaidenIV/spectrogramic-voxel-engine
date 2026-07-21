@@ -33,7 +33,7 @@
 <header class="brand"><h1>SPECTROGRAMIC VOXEL ENGINE</h1></header>
 
 <div class="control toggle-row advanced-mode-toggle">
-<label for="advancedMode">Advanced Mode</label>
+<label for="advancedMode" id="advancedModeLabel">Advanced Mode</label>
 <label aria-label="Advanced mode" class="toggle-switch">
 <input class="toggle-switch-input" id="advancedMode" role="switch" type="checkbox"/>
 <span aria-hidden="true" class="toggle-switch-track"></span>
@@ -55,7 +55,7 @@
 </div>
 <div class="transport">
 <button class="play-button" disabled="" id="playButton" type="button">Play</button>
-<button id="clearButton" type="button">Clear Waveform</button>
+<button aria-pressed="false" disabled="" id="loopButton" type="button">Loop</button>
 </div>
 <div class="control timeline-row">
 <span class="time-label" id="currentTime">0:00</span>
@@ -63,7 +63,7 @@
 <span class="time-label" id="duration">0:00</span>
 </div>
 <div class="control">
-<button aria-pressed="false" disabled="" id="loopButton" type="button">Loop</button>
+<button id="clearButton" type="button">Clear Waveform</button>
 <div class="loop-status" data-tone="idle" hidden="" id="loopStatus"></div>
 </div>
 <div class="advanced-only control">

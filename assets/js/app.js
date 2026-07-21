@@ -15,6 +15,7 @@ import { applyPerformancePreset, applySettings, bindCheckbox, bindColor, bindNum
 import { exportPng, exportSettings, exportVideo, requestVideoExportCancel, setVideoExportStatus, updateVideoExportFormatUi } from "./export.js";
 
 const advancedModeInput = document.getElementById("advancedMode");
+const advancedModeLabel = document.getElementById("advancedModeLabel");
 const controlPanel = document.getElementById("controlPanel");
 
 const keyboardControlTextDisplay = document.getElementById("keyboardControlTextDisplay");
@@ -58,6 +59,11 @@ function setAdvancedMode(enabled) {
   app.classList.toggle("advanced-mode", isAdvanced);
   advancedModeInput.checked = isAdvanced;
   advancedModeInput.setAttribute("aria-checked", String(isAdvanced));
+  if (advancedModeLabel) {
+    advancedModeLabel.textContent = isAdvanced
+      ? "Advanced Mode: On"
+      : "Advanced Mode: Off";
+  }
 }
 
 advancedModeInput.addEventListener("change", () => {

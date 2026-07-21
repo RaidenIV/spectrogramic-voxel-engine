@@ -174,20 +174,6 @@ export async function loadAudioFile(file) {
     runtime.decodedAudioBuffer = decodedBuffer;
     initializeLoopSelection(runtime.decodedAudioBuffer);
     state.hudLayer = null;
-    setAudioLoadProgress(90, "Analyzing viewport frequency graph…");
-    await rebuildHudFrequencySpectrogram({
-      shouldCancel: () => loadVersion !== runtime.audioLoadVersion,
-      onProgress: (amount) => {
-        setAudioLoadProgress(
-          90 + amount * 9,
-          `Analyzing viewport frequency graph · ${Math.round(amount * 100)}%`
-        );
-      }
-    });
-
-    if (loadVersion !== runtime.audioLoadVersion) {
-      return;
-    }
 
     audio.src = runtime.currentObjectUrl;
     audio.load();
@@ -203,6 +189,35 @@ export async function loadAudioFile(file) {
     playButton.disabled = false;
     timeline.disabled = false;
     hideAudioLoadProgress(900);
+
+    // Build the viewport frequency graph in the background so playback is
+    // not blocked waiting on this analysis (matches the non-blocking
+    // pattern already used when changing FFT resolution or resetting
+    // settings elsewhere in the app).
+    setFftLoadProgress(5, "Analyzing viewport frequency graph…");
+    rebuildHudFrequencySpectrogram({
+      shouldCancel: () => loadVersion !== runtime.audioLoadVersion,
+      onProgress: (amount) => {
+        if (loadVersion !== runtime.audioLoadVersion) {
+          return;
+        }
+
+        setFftLoadProgress(
+          5 + amount * 95,
+          `Analyzing viewport frequency graph · ${Math.round(amount * 100)}%`
+        );
+      }
+    }).then(() => {
+      if (loadVersion === runtime.audioLoadVersion) {
+        setFftLoadProgress(100, "Viewport frequency graph ready");
+        hideFftLoadProgress(900);
+      }
+    }).catch((error) => {
+      if (error?.name !== "AbortError") {
+        console.error(error);
+      }
+      hideFftLoadProgress();
+    });
   } catch (error) {
     if (loadVersion !== runtime.audioLoadVersion) {
       return;
